@@ -1,0 +1,55 @@
+{
+  "name": "تحقیق‌یار — همراه دانش‌آموز",
+  "short_name": "تحقیق‌یار",
+  "description": "نوشتن، ذخیره، چاپ و دانلود PDF تحقیق‌های دانش‌آموزی + دستیار هوشمند و ساخت بروشور",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "portrait-primary",
+  "background_color": "#f6f5fb",
+  "theme_color": "#6d5dfc",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "ساخت تحقیق جدید",
+      "short_name": "تحقیق جدید",
+      "url": "./index.html",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    },
+    {
+      "name": "تحقیق با هوش مصنوعی",
+      "short_name": "هوش مصنوعی",
+      "url": "./index.html",
+      "icons": [{ "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ]
+}

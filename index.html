@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#6d5dfc">
+<title>تحقیق‌یار — همراه دانش‌آموز</title>
+
+<!-- ============ PWA ============ -->
+<link rel="manifest" href="./manifest.json">
+<meta name="application-name" content="تحقیق‌یار">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="تحقیق‌یار">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{font-family:'Vazirmatn',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.75;min-height:100vh;transition:background .3s,color .3s;overflow-x:hidden}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,textarea,select{font-family:inherit}
+img{max-width:100%;display:block}
+:root{--primary:#6d5dfc;--primary-2:#a78bfa;--primary-soft:#ede9ff;--bg:#f6f5fb;--card:#fff;--text:#181433;--muted:#6b7280;--border:#eae7f5;--shadow:0 4px 24px rgba(109,93,252,.08);--shadow-lg:0 12px 40px rgba(109,93,252,.16);--danger:#ef4444;--success:#10b981;--radius:18px}
+body.theme-blue{--primary:#0ea5e9;--primary-2:#38bdf8;--primary-soft:#e0f2fe;--bg:#f0f9ff}
+body.theme-green{--primary:#10b981;--primary-2:#34d399;--primary-soft:#d1fae5;--bg:#f0fdf8}
+body.theme-orange{--primary:#f97316;--primary-2:#fb923c;--primary-soft:#ffedd5;--bg:#fffaf5}
+body.dark{--bg:#0f0d1a;--card:#1a1730;--text:#f3f1fb;--muted:#a2a0b8;--border:#2a2540;--primary-soft:rgba(109,93,252,.18)}
+#app{max-width:700px;margin:0 auto;min-height:100vh;position:relative}
+.page{display:none;padding:20px;padding-bottom:110px;animation:pageIn .35s ease}
+.page.active{display:block}
+.page.no-nav{padding-bottom:24px}
+@keyframes pageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulseRec{0%,100%{opacity:1}50%{opacity:.55}}
+.bottomnav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:6px 0 calc(6px + env(safe-area-inset-bottom));z-index:40;box-shadow:0 -4px 20px rgba(0,0,0,.04);max-width:700px;margin:0 auto;transition:transform .3s,opacity .3s}
+.bottomnav.hidden{transform:translateY(100%);opacity:0;pointer-events:none}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 20px;color:var(--muted);border-radius:12px;font-size:11px;font-weight:500;transition:all .2s;min-width:64px;min-height:48px;justify-content:center}
+.nav-item svg{width:22px;height:22px}
+.nav-item.active{color:var(--primary);background:var(--primary-soft)}
+h1{font-size:24px;font-weight:800;margin:0 0 8px;letter-spacing:-.4px}
+h2{font-size:19px;font-weight:700;margin:0 0 12px}
+h3{font-size:17px;font-weight:700;margin:0 0 4px}
+p{margin:0 0 8px;color:var(--muted);font-size:14px}
+.muted{color:var(--muted);font-size:13px}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);padding:20px;margin-bottom:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 20px;height:52px;border-radius:14px;font-size:16px;font-weight:600;transition:transform .15s,opacity .2s;min-height:44px;user-select:none}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.btn svg{width:20px;height:20px}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;box-shadow:0 6px 20px rgba(109,93,252,.28);width:100%;border:none}
+.btn-outline{border:1.5px solid var(--primary);color:var(--primary);background:transparent}
+.btn-ghost{color:var(--muted)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-sm{height:40px;font-size:14px;padding:0 14px;border-radius:11px}
+.btn-sm svg{width:16px;height:16px}
+.btn-block{width:100%}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:14px;font-weight:600;margin-bottom:8px;color:var(--text)}
+.field input,.field textarea,.field select{width:100%;padding:14px 16px;min-height:48px;border:1.5px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);font-size:16px;transition:border-color .2s,box-shadow .2s;outline:none}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--primary);box-shadow:0 0 0 4px var(--primary-soft)}
+.field textarea{resize:none;overflow:hidden;min-height:100px;line-height:1.9;font-family:inherit}
+.field textarea.tall{min-height:200px}
+.field-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:8px;flex-wrap:wrap}
+.segmented{display:flex;background:var(--bg);border-radius:12px;padding:4px;gap:4px;border:1px solid var(--border)}
+.segmented button{flex:1;padding:10px;border-radius:9px;font-size:14px;font-weight:600;color:var(--muted);transition:all .2s}
+.segmented button.active{background:var(--card);color:var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.welcome-wrap{padding-top:32px;text-align:center}
+.welcome-hero{width:96px;height:96px;border-radius:28px;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 12px 40px rgba(109,93,252,.35)}
+.welcome-hero svg{width:48px;height:48px;color:#fff}
+.welcome-title{font-size:26px;font-weight:800;margin-bottom:8px}
+.welcome-sub{color:var(--muted);margin-bottom:24px;font-size:15px}
+.theme-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:8px}
+.theme-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border-radius:14px;border:2px solid var(--border);background:var(--card);transition:all .2s;font-size:11px;font-weight:600}
+.theme-card.selected{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+.theme-dot{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--t1),var(--t2));box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-top:4px}
+.greeting{font-size:22px;font-weight:800;margin:0}
+.greeting-sub{font-size:13px;color:var(--muted);margin:2px 0 0}
+.icon-btn{width:44px;height:44px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text);transition:all .2s;box-shadow:var(--shadow)}
+.icon-btn:active{transform:scale(.94)}
+.icon-btn svg{width:22px;height:22px}
+.card-action{display:flex;align-items:center;gap:16px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);padding:20px;margin-bottom:14px;transition:transform .2s,box-shadow .2s;cursor:pointer;animation:cardIn .4s ease both}
+.card-action:active{transform:scale(.98)}
+.card-icon{width:56px;height:56px;border-radius:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;box-shadow:0 6px 20px rgba(109,93,252,.3)}
+.card-icon svg{width:28px;height:28px}
+.card-body{flex:1;min-width:0}
+.card-body h3{margin:0;font-size:16px}
+.card-body p{margin:2px 0 0;font-size:13px}
+.card-arrow{color:var(--muted);width:20px;height:20px}
+.empty{text-align:center;padding:48px 20px;background:var(--card);border-radius:var(--radius);border:1px dashed var(--border);box-shadow:var(--shadow)}
+.empty-icon{width:88px;height:88px;border-radius:26px;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.empty-icon svg{width:44px;height:44px}
+.empty h3{font-size:18px;margin-bottom:8px}
+.empty p{max-width:320px;margin:0 auto 20px;font-size:14px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);gap:12px}
+.toggle-row:last-child{border-bottom:none}
+.toggle-row .label{font-size:15px;font-weight:500}
+.switch{position:relative;width:50px;height:30px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0;position:absolute}
+.switch-track{position:absolute;inset:0;border-radius:15px;background:var(--border);cursor:pointer;transition:background .25s}
+.switch-track::after{content:'';position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.15);transition:transform .25s}
+.switch input:checked + .switch-track{background:var(--primary)}
+.switch input:checked + .switch-track::after{transform:translateX(-20px)}
+.list-item{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);padding:16px;margin-bottom:12px;animation:cardIn .35s ease both}
+.list-item h3{font-size:16px;margin:0 0 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.list-item h3 .type-icon{flex-shrink:0;width:18px;height:18px}
+.list-item .meta{font-size:12px;color:var(--muted);margin-bottom:12px;display:flex;flex-wrap:wrap;gap:8px}
+.list-item .meta span{display:inline-flex;align-items:center;gap:4px}
+.list-item .meta svg{width:13px;height:13px}
+.list-actions{display:flex;gap:8px}
+.list-actions .icon-btn{width:40px;height:40px;box-shadow:none}
+.skeleton{background:linear-gradient(90deg,var(--border) 0%,var(--bg) 50%,var(--border) 100%);background-size:800px 100%;animation:shimmer 1.4s infinite linear;border-radius:10px}
+.skeleton-card{padding:18px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:12px}
+.skeleton-line{height:14px;margin-bottom:10px}
+.skeleton-line.w60{width:60%}
+.skeleton-line.w80{width:80%}
+.skeleton-line.w40{width:40%}
+.ai-option{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);padding:16px;margin-bottom:12px;animation:cardIn .4s ease both}
+.ai-option-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+.ai-option-head h3{font-size:16px;margin:0;flex:1;line-height:1.5}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.badge-fa{background:#dcfce7;color:#166534}
+.badge-tr{background:#dbeafe;color:#1e40af}
+body.dark .badge-fa{background:rgba(16,185,129,.2);color:#34d399}
+body.dark .badge-tr{background:rgba(59,130,246,.2);color:#60a5fa}
+.ai-option-summary{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.8}
+.ai-option-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.ai-source{font-size:12px;color:var(--muted);display:inline-flex;align-items:center;gap:4px}
+.ai-source svg{width:13px;height:13px}
+#sheet-container{width:100%;overflow:hidden;padding:8px 0}
+#sheet-scaler{display:block;transition:transform .2s;transform-origin:top right}
+#sheet-scaler > .sheet-section{margin:0 auto 14px}
+.sheet-section{width:21cm;min-height:29.7cm;background:#fff;padding:2cm;position:relative;color:#111;font-size:11pt;line-height:1.9;page-break-after:always;break-after:page;box-shadow:0 4px 20px rgba(0,0,0,.08);background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 210 297' preserveAspectRatio='none'><rect x='5' y='5' width='200' height='287' fill='none' stroke='%23222' stroke-width='0.5'/></svg>");background-size:21cm 29.7cm;background-repeat:repeat-y;background-position:top center}
+.sheet-section:last-child{page-break-after:auto;break-after:auto}
+.sheet-section.no-border{background-image:none;padding:2cm 2.5cm}
+.sheet-section h2{font-size:14pt;font-weight:800;color:#111;margin:0 0 14pt;padding-bottom:8pt;border-bottom:1.5pt solid #333}
+.sheet-section p{font-size:11pt;line-height:1.95;margin:0 0 9pt;text-align:justify;color:#1a1a1a}
+.sheet-section .bismillah{text-align:center;font-size:16pt;font-weight:800;color:#111;margin:0 0 22pt;padding-bottom:16pt;border-bottom:1.2pt solid #ccc}
+.sheet-section .info-table{width:100%;border-collapse:collapse;margin-bottom:18pt;background:#f7f7fa;border-radius:6pt;overflow:hidden;font-size:10.5pt}
+.sheet-section .info-table th{text-align:right;padding:8pt 12pt;font-weight:700;font-size:10pt;color:#333;background:#eeeef3;width:130pt;vertical-align:top}
+.sheet-section .info-table td{padding:8pt 12pt;font-size:10.5pt;color:#1a1a1a}
+.sheet-section .info-table tr+tr th,.sheet-section .info-table tr+tr td{border-top:1px solid #e0e0e6}
+.sheet-section .images-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(5cm,1fr));gap:10pt;margin:12pt 0}
+.sheet-section .images-gallery img{width:100%;border-radius:6pt;border:0.5pt solid #ccc}
+.sheet-section .inline-img-wrap{display:block;text-align:center;margin:12pt 0}
+.sheet-section .inline-img{max-width:100%;max-height:9cm;border-radius:6pt;border:0.5pt solid #ccc;margin:0 auto}
+.sheet-section .thanks{text-align:center;font-size:12.5pt;font-weight:700;color:#111;margin-top:28pt;padding-top:18pt;border-top:1.2pt solid #ccc}
+.sheet-section .page-number{position:absolute;bottom:0.9cm;left:0;right:0;text-align:center;font-size:9pt;color:#888;font-weight:500;letter-spacing:0.5pt}
+#brochure-container{width:100%;overflow:hidden;padding:8px 0}
+#brochure-scaler{display:block;transition:transform .2s;transform-origin:top right}
+.brochure-page{width:29.7cm;height:21cm;display:grid;grid-template-columns:1fr 1fr 1fr;background:#fff;color:#111;box-shadow:0 4px 20px rgba(0,0,0,.1);margin:0 auto 16px;overflow:hidden;page-break-after:always;break-after:page}
+.brochure-page:last-child{page-break-after:auto;break-after:auto;margin-bottom:0}
+.brochure-panel{padding:1.2cm 0.9cm;overflow:hidden;position:relative;background:#fff}
+.brochure-panel h3{font-size:calc(var(--bf) * 1.2);font-weight:800;color:var(--primary);margin:0 0 8pt;padding-bottom:5pt;border-bottom:1.5pt solid var(--primary)}
+.brochure-panel p{font-size:var(--bf);line-height:1.75;margin:0 0 6pt;text-align:justify;color:#222}
+.brochure-panel section{margin-bottom:8pt}
+.brochure-panel .inline-img-wrap{display:block;text-align:center;margin:5pt 0}
+.brochure-panel .inline-img{max-width:100%;max-height:3.5cm;border-radius:4pt;border:0.5pt solid rgba(0,0,0,.1);margin:0 auto}
+.panel-front-cover{color:#fff;display:flex;flex-direction:column;justify-content:space-between}
+.panel-front-cover .front-top{font-size:8pt;opacity:.85;display:flex;justify-content:space-between}
+.panel-front-cover .front-center{margin-top:1cm}
+.panel-front-cover .front-title{font-size:calc(var(--bf) * 2.4);font-weight:800;line-height:1.25;letter-spacing:-.5pt;margin:0 0 8pt}
+.panel-front-cover .front-subtitle{font-size:calc(var(--bf) * 1.1);opacity:.92;margin:0 0 10pt;line-height:1.5}
+.panel-front-cover .front-image{text-align:center;margin:10pt 0}
+.panel-front-cover .front-image img{max-width:100%;max-height:6cm;border-radius:6pt;object-fit:cover;margin:0 auto}
+.panel-front-cover .front-bottom{margin-top:auto;padding-top:10pt;border-top:0.5pt solid rgba(255,255,255,.4)}
+.panel-front-cover .front-author{font-size:calc(var(--bf) * 1.1);font-weight:600}
+.panel-front-cover .front-org{font-size:var(--bf);opacity:.85;margin-top:2pt}
+.panel-flap{color:#fff;display:flex;flex-direction:column;justify-content:space-between}
+.panel-flap .flap-top{font-size:8pt;opacity:.8}
+.panel-flap .flap-center{margin:14pt 0}
+.panel-flap .flap-title{font-size:calc(var(--bf) * 1.4);font-weight:800;line-height:1.35;margin:0 0 8pt;opacity:.95}
+.panel-flap .flap-text{font-size:var(--bf);line-height:1.7;margin:0;opacity:.92}
+.panel-flap .flap-bottom{padding-top:8pt;border-top:0.5pt solid rgba(255,255,255,.4);font-size:var(--bf);opacity:.85}
+.panel-back-cover{display:flex;flex-direction:column;justify-content:space-between;background:#f7f7fa}
+.panel-back-cover .back-top{font-size:8pt;color:#888;display:flex;justify-content:space-between}
+.panel-back-cover .back-center{flex:1;display:flex;flex-direction:column;justify-content:center;margin:10pt 0}
+.panel-back-cover .back-center h3{font-size:calc(var(--bf) * 1.2);margin:0 0 8pt;color:var(--primary);padding-bottom:4pt;border-bottom:1pt solid var(--primary)}
+.panel-back-cover .back-center p{font-size:var(--bf);line-height:1.7;color:#333;margin:0}
+.panel-back-cover .back-bottom{font-size:var(--bf);line-height:1.7;padding-top:10pt;border-top:0.5pt dashed #ccc}
+.panel-back-cover .back-thanks{font-size:calc(var(--bf) * 1.1);font-weight:700;color:var(--primary);text-align:center;margin-top:8pt}
+.img-preview-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.img-preview-item{position:relative;width:80px;height:80px;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:var(--bg)}
+.img-preview-item img{width:100%;height:100%;object-fit:cover}
+.img-preview-item button{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.7);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;line-height:1}
+#modal-root{position:fixed;inset:0;z-index:100;pointer-events:none}
+.modal-backdrop{position:absolute;inset:0;background:rgba(10,8,25,.55);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity .25s;pointer-events:auto;backdrop-filter:blur(4px)}
+.modal-backdrop.show{opacity:1}
+.modal{background:var(--card);border-radius:20px;padding:28px 24px;max-width:400px;width:100%;text-align:center;transform:scale(.92);opacity:0;transition:all .25s cubic-bezier(.4,0,.2,1);box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:90vh;overflow-y:auto}
+.modal-backdrop.show .modal{transform:scale(1);opacity:1}
+.modal-icon{width:64px;height:64px;border-radius:20px;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.modal-icon svg{width:32px;height:32px}
+.modal h3{font-size:18px;margin-bottom:8px}
+.modal p{color:var(--muted);font-size:14px;margin-bottom:24px}
+.modal-actions{display:flex;gap:10px}
+.modal-actions .btn{flex:1;height:48px;font-size:15px}
+#toast-container{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;pointer-events:none;width:calc(100% - 32px);max-width:400px}
+.toast{background:var(--card);color:var(--text);padding:12px 16px;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.15);display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(-24px);transition:all .35s cubic-bezier(.4,0,.2,1);border:1.5px solid var(--border);font-size:14px;font-weight:500;pointer-events:auto}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast svg{width:20px;height:20px;flex-shrink:0}
+.toast.success{border-color:var(--success)}
+.toast.success svg{color:var(--success)}
+.toast.error{border-color:var(--danger)}
+.toast.error svg{color:var(--danger)}
+.toast.info svg{color:var(--primary)}
+.settings-modal{max-width:560px;text-align:right;padding:24px;max-height:90vh;overflow-y:auto}
+.settings-modal h3{font-size:20px;margin:0 0 20px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.settings-section{padding:16px 0;border-bottom:1px solid var(--border)}
+.settings-section:last-child{border-bottom:none}
+.settings-section h4{margin:0 0 12px;font-size:15px;font-weight:700}
+.settings-section .theme-grid{grid-template-columns:repeat(4,1fr)}
+.color-swatches{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.swatch{width:38px;height:38px;border-radius:50%;border:2px solid var(--border);padding:0;transition:transform .15s,border-color .15s,box-shadow .15s;flex-shrink:0}
+.swatch:hover{transform:scale(1.05)}
+.swatch.active{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft);transform:scale(1.1)}
+input[type="color"]{width:44px;height:38px;padding:2px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;background:var(--card);flex-shrink:0}
+.preview-toolbar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.preview-toolbar .btn{flex:1;min-width:90px;height:46px;font-size:13px}
+#image-input,#brochure-cover-input{position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+/* DEMO */
+.demo-only{display:none!important}
+body.demo-mode .demo-only{display:inline-flex!important}
+.demo-block{display:none!important}
+body.demo-mode .demo-block{display:block!important}
+body.demo-mode .demo-toolbar{display:flex!important}
+body.demo-mode .templates-btn{display:flex!important}
+body.demo-mode .mic-btn{display:inline-flex}
+body.demo-mode #list-search-bar{display:block}
+.streak-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:linear-gradient(135deg,#f97316,#fb923c);color:#fff;border-radius:20px;font-size:13px;font-weight:700;box-shadow:0 4px 12px rgba(249,115,22,.3);margin-top:8px}
+.achievement-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:10px}
+.achievement{padding:10px 6px;background:var(--bg);border-radius:12px;text-align:center;font-size:11px;border:1.5px solid var(--border);transition:all .2s}
+.achievement.unlocked{background:var(--primary-soft);border-color:var(--primary);color:var(--primary)}
+.achievement.locked{opacity:.4}
+.achievement-icon{font-size:22px;display:block;margin-bottom:2px}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+.stat-box{padding:12px;background:var(--bg);border-radius:10px;text-align:center;border:1px solid var(--border)}
+.stat-num{font-size:22px;font-weight:800;color:var(--primary);display:block;line-height:1.2}
+.stat-label{font-size:11px;color:var(--muted)}
+.mic-btn{height:36px;padding:0 10px;background:var(--card);border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-weight:600;display:none;align-items:center;gap:4px;color:var(--text)}
+.mic-btn svg{width:14px;height:14px}
+.mic-btn.recording{background:var(--danger);color:#fff;border-color:var(--danger);animation:pulseRec .8s infinite}
+#list-search-bar{display:none;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;margin-bottom:14px}
+#list-search{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font-family:inherit;font-size:15px;margin-bottom:8px;outline:none}
+#list-search:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+#list-filter{display:flex;gap:4px;background:var(--bg);padding:4px;border-radius:10px;border:1px solid var(--border)}
+#list-filter button{flex:1;padding:8px;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);transition:all .15s}
+#list-filter button.active{background:var(--card);color:var(--primary);box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.templates-btn{display:none!important}
+.demo-toolbar{display:none!important}
+/* PWA update banner */
+#pwa-update-banner{position:fixed;bottom:calc(80px + env(safe-area-inset-bottom));left:16px;right:16px;background:var(--primary);color:#fff;padding:12px 16px;border-radius:14px;box-shadow:0 8px 30px rgba(109,93,252,.4);display:none;align-items:center;gap:10px;z-index:150;font-size:14px;font-weight:600;animation:pageIn .4s ease}
+#pwa-update-banner.show{display:flex}
+#pwa-update-banner button{background:rgba(255,255,255,.25);color:#fff;padding:8px 14px;border-radius:10px;font-size:13px;font-weight:700;white-space:nowrap}
+#pwa-update-banner button:hover{background:rgba(255,255,255,.35)}
+@page{size:A4 portrait;margin:0}
+@media print{
+  body{-webkit-print-color-adjust:exact;print-color-adjust:exact;background:#fff !important}
+  body > *:not(#app){display:none !important}
+  #bottomnav,#toast-container,#modal-root,#pwa-update-banner{display:none !important}
+  #app > .page:not(#page-preview){display:none !important}
+  #page-preview{display:block !important;margin:0 !important;padding:0 !important;max-width:none !important;animation:none !important}
+  #page-preview > .topbar,#view-research > .preview-toolbar,#view-research > button,#view-brochure > .preview-toolbar{display:none !important}
+  body.print-research-mode #view-brochure{display:none !important}
+  body.print-brochure-mode #view-research{display:none !important}
+  body.print-research-mode #view-research,body.print-brochure-mode #view-brochure{display:block !important}
+  #sheet-container,#brochure-container{overflow:visible !important;padding:0 !important;height:auto !important;display:block !important}
+  #sheet-scaler,#brochure-scaler{transform:none !important;margin:0 !important;display:block !important;width:auto !important;height:auto !important}
+  .sheet-section{box-shadow:none !important;margin:0 !important}
+  .brochure-page{box-shadow:none !important;margin:0 !important}
+  .page-number{display:block !important}
+}
+@media (min-width:640px){.card-action:hover{transform:translateY(-3px)}.list-item:hover{box-shadow:var(--shadow-lg)}}
+@media (max-width:400px){
+  .page{padding:16px;padding-bottom:110px}
+  .theme-grid{grid-template-columns:repeat(4,1fr);gap:8px}
+  .theme-card{padding:10px 4px;font-size:10px}
+  .theme-dot{width:26px;height:26px}
+  .swatch{width:34px;height:34px}
+  input[type="color"]{width:40px;height:34px}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <div class="page" id="page-welcome">
+    <div class="welcome-wrap">
+      <div class="welcome-hero"><i data-lucide="graduation-cap"></i></div>
+      <h1 class="welcome-title">به تحقیق‌یار خوش آمدید</h1>
+      <p class="welcome-sub">همراه هوشمند شما برای نوشتن تحقیق</p>
+      <div class="card" style="text-align:right;padding:24px">
+        <h2 style="font-size:16px;margin-bottom:16px">بیایید حسابتان را بسازیم</h2>
+        <div class="field"><label>این برنامه را برای چه استفاده‌ای می‌خواهید؟</label>
+          <div class="segmented" id="w-account-type">
+            <button data-type="student" class="active">دانش‌آموزی</button>
+            <button data-type="public">عمومی</button>
+          </div>
+        </div>
+        <div class="field"><label>نام و نام خانوادگی</label><input type="text" id="w-name"></div>
+        <div id="w-student-fields">
+          <div class="field"><label>نام مدرسه</label><input type="text" id="w-school"></div>
+          <div class="field"><label>نام کلاس</label><input type="text" id="w-class"></div>
+          <div class="field"><label>پایه تحصیلی</label><select id="w-grade"><option value="">انتخاب کنید</option><option>اول</option><option>دوم</option><option>سوم</option><option>چهارم</option><option>پنجم</option><option>ششم</option><option>هفتم</option><option>هشتم</option><option>نهم</option><option>دهم</option><option>یازدهم</option><option>دوازدهم</option></select></div>
+        </div>
+        <div id="w-public-fields" style="display:none">
+          <div class="field"><label>نام سازمان (اختیاری)</label><input type="text" id="w-org"></div>
+          <div class="field"><label>سمت (اختیاری)</label><input type="text" id="w-role"></div>
+        </div>
+        <div class="field"><label>رنگ برنامه</label>
+          <div class="theme-grid" id="w-theme-grid">
+            <button class="theme-card" data-theme="purple" style="--t1:#6d5dfc;--t2:#a78bfa"><span class="theme-dot"></span><span>بنفش</span></button>
+            <button class="theme-card" data-theme="blue" style="--t1:#0ea5e9;--t2:#38bdf8"><span class="theme-dot"></span><span>آبی</span></button>
+            <button class="theme-card" data-theme="green" style="--t1:#10b981;--t2:#34d399"><span class="theme-dot"></span><span>سبز</span></button>
+            <button class="theme-card" data-theme="orange" style="--t1:#f97316;--t2:#fb923c"><span class="theme-dot"></span><span>نارنجی</span></button>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:8px" onclick="createAccount()"><i data-lucide="arrow-left"></i> شروع کنیم</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="page" id="page-dashboard">
+    <div class="topbar">
+      <div>
+        <h1 class="greeting" id="dash-greeting">سلام</h1>
+        <p class="greeting-sub" id="dash-sub">امروز چه تحقیقی می‌نویسیم؟</p>
+        <div id="streak-container"></div>
+      </div>
+      <button class="icon-btn" onclick="openSettings()"><i data-lucide="settings"></i></button>
+    </div>
+    <div class="card-action" onclick="startNewResearch()" style="animation-delay:.05s">
+      <div class="card-icon"><i data-lucide="file-plus-2"></i></div>
+      <div class="card-body"><h3>ساخت تحقیق جدید</h3><p>شروع یک تحقیق تازه از صفر</p></div>
+      <i data-lucide="chevron-left" class="card-arrow"></i>
+    </div>
+    <div class="card-action" onclick="showPage('page-list');renderList()" style="animation-delay:.15s">
+      <div class="card-icon" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8)"><i data-lucide="folder-open"></i></div>
+      <div class="card-body"><h3>سندهای ساخته‌شده</h3><p id="dash-count">هنوز سندی نساخته‌اید</p></div>
+      <i data-lucide="chevron-left" class="card-arrow"></i>
+    </div>
+    <div class="card-action" onclick="showPage('page-ai')" style="animation-delay:.2s">
+      <div class="card-icon" style="background:linear-gradient(135deg,#10b981,#34d399)"><i data-lucide="sparkles"></i></div>
+      <div class="card-body"><h3>تحقیق با هوش مصنوعی</h3><p>جست‌وجوی هوشمند در منابع فارسی</p></div>
+      <i data-lucide="chevron-left" class="card-arrow"></i>
+    </div>
+    <div class="card-action" onclick="startNewBrochure()" style="animation-delay:.3s">
+      <div class="card-icon" style="background:linear-gradient(135deg,#ec4899,#f472b6)"><i data-lucide="newspaper"></i></div>
+      <div class="card-body"><h3>ساخت بروشور دستی</h3><p>سه‌پنلی، با رنگ و تصویر دلخواه</p></div>
+      <i data-lucide="chevron-left" class="card-arrow"></i>
+    </div>
+  </div>
+
+  <div class="page" id="page-form">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="icon-btn" onclick="formGoBack()"><i data-lucide="arrow-right"></i></button>
+        <div><h1 style="font-size:20px;margin:0">اطلاعات تحقیق</h1><p class="greeting-sub">فیلدهای اختیاری را پر کنید</p></div>
+      </div>
+    </div>
+    <button class="btn btn-outline btn-block templates-btn" style="margin-bottom:14px" onclick="openTemplates()"><i data-lucide="layout-template"></i> شروع از قالب آماده</button>
+    <div class="card">
+      <div class="field"><label id="f-researcher-label">نام تحقیق‌کننده</label><input type="text" id="f-researcher"></div>
+      <div class="field"><label id="f-title-label">نام تحقیق</label><input type="text" id="f-title"></div>
+      <div class="field"><label id="f-school-label">نام مدرسه</label><input type="text" id="f-school"></div>
+      <div class="field"><label id="f-group-label">اعضای گروه (اختیاری)</label><input type="text" id="f-group"></div>
+      <div class="field" id="f-class-wrap"><label>کلاس</label><input type="text" id="f-class"></div>
+      <div class="field"><label id="f-subject-label">نام درس</label><input type="text" id="f-subject"></div>
+      <div class="field" id="f-teacher-wrap"><label id="f-teacher-label">نام معلم</label><input type="text" id="f-teacher"></div>
+      <div class="field" id="f-grade-wrap"><label>پایه</label><input type="text" id="f-grade"></div>
+    </div>
+    <button class="btn btn-primary" onclick="formContinue()">ادامه <i data-lucide="arrow-left"></i></button>
+  </div>
+
+  <div class="page" id="page-content">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="icon-btn" onclick="contentGoBack()"><i data-lucide="arrow-right"></i></button>
+        <div><h1 style="font-size:20px;margin:0">محتوای تحقیق</h1><p class="greeting-sub">هر بخشی را که می‌خواهید پر کنید</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="field">
+        <label>مقدمه</label>
+        <textarea id="c-intro" placeholder="مقدمه تحقیق..."></textarea>
+        <div class="field-actions">
+          <label class="btn btn-sm btn-outline" for="image-input" onclick="setImageTarget('c-intro')"><i data-lucide="image-plus"></i> تصویر</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>چکیده</label>
+        <textarea id="c-abstract" placeholder="خلاصه..."></textarea>
+        <div class="field-actions">
+          <label class="btn btn-sm btn-outline" for="image-input" onclick="setImageTarget('c-abstract')"><i data-lucide="image-plus"></i> تصویر</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>متن تحقیق</label>
+        <textarea id="c-body" class="tall" placeholder="متن اصلی..."></textarea>
+        <div class="field-actions">
+          <label class="btn btn-sm btn-outline" for="image-input" onclick="setImageTarget('c-body')"><i data-lucide="image-plus"></i> تصویر</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>نتیجه‌گیری</label>
+        <textarea id="c-conclusion" placeholder="نتیجه‌گیری..."></textarea>
+        <div class="field-actions">
+          <label class="btn btn-sm btn-outline" for="image-input" onclick="setImageTarget('c-conclusion')"><i data-lucide="image-plus"></i> تصویر</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>منابع</label>
+        <textarea id="c-sources" placeholder="منابع..."></textarea>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:8px">گزینه‌های نمایش</h3>
+      <div class="toggle-row"><span class="label">نمایش «بسم‌الله الرحمن الرحیم»</span><label class="switch"><input type="checkbox" id="t-bismillah" checked><span class="switch-track"></span></label></div>
+      <div class="toggle-row"><span class="label">نمایش «از توجه شما سپاسگزارم»</span><label class="switch"><input type="checkbox" id="t-thanks" checked><span class="switch-track"></span></label></div>
+      <div class="toggle-row"><span class="label">کادربندی مستطیلی هر صفحه</span><label class="switch"><input type="checkbox" id="t-border" checked><span class="switch-track"></span></label></div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" onclick="contentSaveAndPreview()"><i data-lucide="eye"></i> ذخیره و پیش‌نمایش</button>
+      <button class="btn btn-outline" style="flex:0 0 auto;min-width:100px" onclick="contentSaveOnly()"><i data-lucide="save"></i> ذخیره</button>
+    </div>
+  </div>
+
+  <div class="page" id="page-brochure-form">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="icon-btn" onclick="brochureFormGoBack()"><i data-lucide="arrow-right"></i></button>
+        <div><h1 style="font-size:20px;margin:0">ساخت بروشور</h1><p class="greeting-sub">سه‌پنلی • قابل چاپ پشت‌ورو</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:12px">جلد</h3>
+      <div class="field"><label>عنوان جلد</label><input type="text" id="b-title"></div>
+      <div class="field"><label>زیرعنوان (اختیاری)</label><input type="text" id="b-subtitle"></div>
+      <div class="field"><label>نویسنده</label><input type="text" id="b-author"></div>
+      <div class="field"><label>سازمان / مدرسه (اختیاری)</label><input type="text" id="b-org"></div>
+      <div class="field">
+        <label>رنگ جلد</label>
+        <div class="color-swatches" id="b-color-swatches">
+          <button type="button" class="swatch active" data-color="#6d5dfc" style="background:#6d5dfc"></button>
+          <button type="button" class="swatch" data-color="#0ea5e9" style="background:#0ea5e9"></button>
+          <button type="button" class="swatch" data-color="#10b981" style="background:#10b981"></button>
+          <button type="button" class="swatch" data-color="#f97316" style="background:#f97316"></button>
+          <button type="button" class="swatch" data-color="#ef4444" style="background:#ef4444"></button>
+          <button type="button" class="swatch" data-color="#ec4899" style="background:#ec4899"></button>
+          <button type="button" class="swatch" data-color="#1f2937" style="background:#1f2937"></button>
+          <input type="color" id="b-color" value="#6d5dfc">
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>تصویر جلد</label>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <label class="btn btn-sm btn-outline" for="brochure-cover-input"><i data-lucide="image-plus"></i> آپلود تصویر جلد</label>
+        </div>
+        <div id="b-cover-preview" class="img-preview-row"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:12px">پنل‌های داخل (۳ پنل)</h3>
+      <div class="field">
+        <label>پنل ۱ — عنوان</label>
+        <input type="text" id="b-panel1-title" placeholder="مثلاً: مقدمه">
+        <label style="margin-top:8px">متن</label>
+        <textarea id="b-panel1" placeholder="متن پنل اول..."></textarea>
+        <div class="field-actions">
+          <label class="btn btn-sm btn-outline" for="image-input" onclick="setImageTarget('b-panel1')"><i data-lucide="image-plus"></i> تصویر</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>پنل ۲ — عنوان</label>
+        <input type="text" id="b-panel2-title" placeholder="مثلاً: متن اصلی">
+        <label style="margin-top:8px">متن</label>
+        <textarea id="b-panel2" placeholder="متن پنل دوم..."></textarea>
+        <div class="field-actions">
+          <label class="btn btn-sm btn-outline" for="image-input" onclick="setImageTarget('b-panel2')"><i data-lucide="image-plus"></i> تصویر</label>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>پنل ۳ — عنوان</label>
+        <input type="text" id="b-panel3-title" placeholder="مثلاً: نتیجه‌گیری">
+        <label style="margin-top:8px">متن</label>
+        <textarea id="b-panel3" placeholder="متن پنل سوم..."></textarea>
+        <div class="field-actions">
+          <label class="btn btn-sm btn-outline" for="image-input" onclick="setImageTarget('b-panel3')"><i data-lucide="image-plus"></i> تصویر</label>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:12px">پشت جلد و تنظیمات</h3>
+      <div class="field"><label>متن پشت جلد</label><textarea id="b-back"></textarea></div>
+      <div class="field"><label>پاورقی</label><input type="text" id="b-footer" placeholder="از توجه شما سپاسگزارم"></div>
+      <div class="field" style="margin-bottom:0">
+        <label>اندازه فونت</label>
+        <select id="b-fontsize">
+          <option value="7">خیلی کوچک (7pt)</option>
+          <option value="8">کوچک (8pt)</option>
+          <option value="9">متوسط (9pt)</option>
+          <option value="10">متوسط رو (10pt)</option>
+          <option value="11">بزرگ (11pt)</option>
+          <option value="12">خیلی بزرگ (12pt)</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" onclick="saveBrochureForm(true)"><i data-lucide="eye"></i> ذخیره و پیش‌نمایش</button>
+      <button class="btn btn-outline" style="flex:0 0 auto;min-width:100px" onclick="saveBrochureForm(false)"><i data-lucide="save"></i> ذخیره</button>
+    </div>
+  </div>
+
+  <div class="page no-nav" id="page-preview">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="icon-btn" onclick="previewGoBack()"><i data-lucide="arrow-right"></i></button>
+        <div><h1 style="font-size:20px;margin:0">پیش‌نمایش</h1><p class="greeting-sub" id="preview-subtitle">سند شما آماده است</p></div>
+      </div>
+    </div>
+    <div id="view-research">
+      <div class="preview-toolbar">
+        <button class="btn btn-primary btn-sm" onclick="downloadPDF()"><i data-lucide="download"></i> PDF</button>
+        <button class="btn btn-outline btn-sm" onclick="printResearch()"><i data-lucide="printer"></i> چاپ</button>
+        <button class="btn btn-outline btn-sm" onclick="editCurrentResearch()"><i data-lucide="pencil"></i> ویرایش</button>
+      </div>
+      <div class="preview-toolbar demo-toolbar">
+        <button class="btn btn-outline btn-sm" onclick="copyResearchText()"><i data-lucide="copy"></i> کپی</button>
+        <button class="btn btn-outline btn-sm" onclick="toggleSpeak()"><i data-lucide="volume-2"></i> خواندن</button>
+        <button class="btn btn-outline btn-sm" onclick="exportWord()"><i data-lucide="file-text"></i> Word</button>
+        <button class="btn btn-outline btn-sm" onclick="exportHTML()"><i data-lucide="code"></i> HTML</button>
+      </div>
+      <button class="btn btn-outline btn-block" style="margin-bottom:16px" onclick="showBrochure()"><i data-lucide="newspaper"></i> ساخت بروشور از این تحقیق</button>
+      <div id="sheet-container"><div id="sheet-scaler"></div></div>
+    </div>
+    <div id="view-brochure" style="display:none">
+      <div class="preview-toolbar">
+        <button class="btn btn-primary btn-sm" onclick="downloadBrochurePDF()"><i data-lucide="download"></i> PDF</button>
+        <button class="btn btn-outline btn-sm" onclick="printBrochure()"><i data-lucide="printer"></i> چاپ</button>
+        <button class="btn btn-outline btn-sm" onclick="editCurrentResearch()"><i data-lucide="pencil"></i> ویرایش</button>
+        <button class="btn btn-outline btn-sm" onclick="showResearchView()"><i data-lucide="file-text"></i> تحقیق</button>
+      </div>
+      <div id="brochure-container"><div id="brochure-scaler"></div></div>
+    </div>
+  </div>
+
+  <div class="page" id="page-list">
+    <div class="topbar">
+      <div><h1 style="font-size:22px;margin:0">سندهای من</h1><p class="greeting-sub" id="list-count-sub"></p></div>
+      <button class="icon-btn" onclick="startNewResearch()"><i data-lucide="plus"></i></button>
+    </div>
+    <div id="list-search-bar">
+      <input type="search" id="list-search" placeholder="🔍 جستجو..." oninput="renderList()">
+      <div id="list-filter">
+        <button data-filter="all" class="active" onclick="setListFilter('all')">همه</button>
+        <button data-filter="research" onclick="setListFilter('research')">تحقیق</button>
+        <button data-filter="brochure" onclick="setListFilter('brochure')">بروشور</button>
+      </div>
+    </div>
+    <div id="list-container"></div>
+  </div>
+
+  <div class="page" id="page-ai">
+    <div class="topbar">
+      <div><h1 style="font-size:22px;margin:0">دستیار هوشمند</h1><p class="greeting-sub">موضوع را بنویسید</p></div>
+    </div>
+    <div class="card" style="padding:20px">
+      <div class="field" style="margin-bottom:12px"><label>تحقیق درباره‌ی ...</label><input type="text" id="ai-topic"></div>
+      <div class="field" style="margin-bottom:12px"><label>کلمات کلیدی (اختیاری)</label><input type="text" id="ai-keywords"></div>
+      <button class="btn btn-primary" id="ai-search-btn" onclick="handleAISearch()"><i data-lucide="search"></i> جست‌وجو</button>
+      <p class="muted" style="font-size:12px;margin-top:10px;text-align:center">اولویت با منابع فارسی</p>
+    </div>
+    <div id="ai-results"></div>
+  </div>
+
+</div>
+
+<nav class="bottomnav hidden" id="bottomnav">
+  <button class="nav-item" data-nav="page-dashboard" onclick="showPage('page-dashboard')"><i data-lucide="home"></i><span>خانه</span></button>
+  <button class="nav-item" data-nav="page-list" onclick="showPage('page-list');renderList()"><i data-lucide="folder-open"></i><span>سندها</span></button>
+  <button class="nav-item" data-nav="page-ai" onclick="showPage('page-ai')"><i data-lucide="sparkles"></i><span>هوش مصنوعی</span></button>
+</nav>
+
+<input type="file" id="image-input" accept="image/*" multiple>
+<input type="file" id="brochure-cover-input" accept="image/*">
+<div id="toast-container"></div>
+<div id="modal-root"></div>
+
+<!-- PWA update banner -->
+<div id="pwa-update-banner">
+  <i data-lucide="download" style="width:20px;height:20px;flex-shrink:0"></i>
+  <span style="flex:1">نسخه‌ی جدید برنامه آماده است</span>
+  <button onclick="activatePWAUpdate()">بارگذاری</button>
+</div>
+
+<script>
+'use strict';
+
+/* ============================================================
+   PWA — Service Worker
+============================================================ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('./sw.js', { scope: './' })
+      .then(function (reg) {
+        console.log('✅ SW registered:', reg.scope);
+        // اگر نسخه‌ی جدید در صف انتظار است
+        if (reg.waiting) showPWAUpdateBanner(reg.waiting);
+        // اگر نسخه‌ی جدید نصب شد
+        reg.addEventListener('updatefound', function () {
+          var newWorker = reg.installing;
+          if (!newWorker) return;
+          newWorker.addEventListener('statechange', function () {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              showPWAUpdateBanner(newWorker);
+            }
+          });
+        });
+      })
+      .catch(function (err) { console.error('❌ SW registration failed:', err); });
+
+    // وقتی Service Worker فعال جدید جایگزین شد
+    var refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
+    });
+  });
+}
+
+var _waitingWorker = null;
+function showPWAUpdateBanner(worker) {
+  _waitingWorker = worker;
+  var banner = document.getElementById('pwa-update-banner');
+  if (banner) banner.classList.add('show');
+  if (window.lucide) lucide.createIcons();
+}
+function activatePWAUpdate() {
+  if (_waitingWorker) {
+    _waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+  } else {
+    window.location.reload();
+  }
+}
+
+/* ============================================================
+   STATE
+============================================================ */
+var KEYS = { profile:'profile', researches:'researches', settings:'settings' };
+var state = { profile:null, researches:[], settings:{theme:'purple',dark:false,showPageNumbers:true,demoMode:false}, current:null, aiOptions:[] };
+var previewReturnPage = 'page-content';
+var formReturnPage = 'page-dashboard';
+var brochureFormReturnPage = 'page-dashboard';
+var currentPreviewView = 'research';
+var welcomeAccountType = 'student';
+var imageTarget = null;
+var lastCursorByField = {};
+var QUOTA_LIMIT = 4.5 * 1024 * 1024;
+var isSpeaking = false;
+var activeRecognition = null;
+
+function uuid(){ try{ if(crypto && crypto.randomUUID) return crypto.randomUUID(); }catch(e){} return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c){ var r=(Math.random()*16)|0; return (c==='x'?r:((r&0x3)|0x8)).toString(16); }); }
+function escapeHtml(str){ if(str===null||str===undefined) return ''; return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;'); }
+function faDate(iso){ try{ var d=new Date(iso); if(isNaN(d.getTime())) return ''; return d.toLocaleDateString('fa-IR',{year:'numeric',month:'long',day:'numeric'}); }catch(e){ return ''; } }
+function fetchTimeout(url,ms){ ms=ms||8000; var ctrl=new AbortController(); var t=setTimeout(function(){ctrl.abort();},ms); return fetch(url,{signal:ctrl.signal}).then(function(r){clearTimeout(t);return r;}).catch(function(e){clearTimeout(t);throw e;}); }
+function sentences(text,n){ if(!text) return ''; var s=text.replace(/\s+/g,' ').trim().match(/[^.!?؟]+[.!?؟]?/g)||[]; return s.slice(0,n).join(' ').trim(); }
+function truncate(text,max){ if(!text) return ''; if(text.length<=max) return text; var cut=text.lastIndexOf(' ',max); return text.slice(0,cut>max*0.7?cut:max)+'…'; }
+function findImage(images,id){ if(!images) return null; for(var i=0;i<images.length;i++){ if(images[i].id===id) return images[i]; } return null; }
+function stripTokens(t){ return (t||'').replace(/\{\{img:[^}]+\}\}/g,'').trim(); }
+function shiftColor(hex,percent){ try{ var num=parseInt(hex.replace('#',''),16); if(isNaN(num)) return hex; var amt=Math.round(2.55*percent); var R=Math.min(255,Math.max(0,(num>>16)+amt)); var G=Math.min(255,Math.max(0,((num>>8)&0xFF)+amt)); var B=Math.min(255,Math.max(0,(num&0xFF)+amt)); return '#'+(0x1000000+R*0x10000+G*0x100+B).toString(16).slice(1); }catch(e){ return hex; } }
+function renderInlineText(text,images){ if(!text) return ''; return String(text).trim().split(/\n+/).filter(function(p){return p.trim();}).map(function(p){ var escaped=escapeHtml(p.trim()); var onlyImg=escaped.match(/^\{\{img:([a-zA-Z0-9_-]+)\}\}$/); if(onlyImg){ var img=findImage(images,onlyImg[1]); return img?'<div class="inline-img-wrap"><img src="'+img.data+'" class="inline-img" alt=""></div>':''; } var rendered=escaped.replace(/\{\{img:([a-zA-Z0-9_-]+)\}\}/g,function(m,id){ var img2=findImage(images,id); return img2?'<span class="inline-img-wrap"><img src="'+img2.data+'" class="inline-img" style="max-height:6cm" alt=""></span>':''; }); return '<p>'+rendered+'</p>'; }).join(''); }
+function splitIntoPages(text,maxChars){ maxChars=maxChars||1800; if(!text) return []; if(text.length<=maxChars) return [text]; var paragraphs=text.split(/\n{2,}/); var chunks=[],cur=''; for(var i=0;i<paragraphs.length;i++){ var p=paragraphs[i]; var ic=(p.match(/\{\{img:/g)||[]).length; var cic=(cur.match(/\{\{img:/g)||[]).length; if((cur.length+cic*300)+(p.length+ic*300)>maxChars&&cur){chunks.push(cur.trim());cur=p;} else {cur=cur?cur+'\n\n'+p:p;} } if(cur.trim()) chunks.push(cur.trim()); return chunks; }
+function getUnusedImages(r){ if(!r.images||!r.images.length) return []; var texts=[r.intro,r.abstract,r.body,r.conclusion,r.sources].filter(Boolean).join(' '); var used={}; var re=/\{\{img:([a-zA-Z0-9_-]+)\}\}/g,m; while((m=re.exec(texts))!==null) used[m[1]]=true; return r.images.filter(function(img){return !used[img.id];}); }
+function findResearch(id){ for(var i=0;i<state.researches.length;i++){ if(state.researches[i].id===id) return state.researches[i]; } return null; }
+function byteSizeOf(str){ try{ return new Blob([str]).size; }catch(e){ return str.length*2; } }
+function storageUsage(){ var total=0; try{ for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i); var v=localStorage.getItem(k); total+=(k.length+(v?v.length:0))*2; } }catch(e){} return total; }
+function compressImage(dataUrl,maxDim,quality){ return new Promise(function(resolve){ var img=new Image(); img.onload=function(){ var w=img.naturalWidth,h=img.naturalHeight; var scale=1; if(w>maxDim||h>maxDim){ scale=Math.min(maxDim/w,maxDim/h); } var nw=Math.round(w*scale),nh=Math.round(h*scale); var canvas=document.createElement('canvas'); canvas.width=nw; canvas.height=nh; var ctx=canvas.getContext('2d'); ctx.fillStyle='#fff'; ctx.fillRect(0,0,nw,nh); ctx.drawImage(img,0,0,nw,nh); try{ resolve(canvas.toDataURL('image/jpeg',quality)); }catch(e){ resolve(dataUrl); } }; img.onerror=function(){ resolve(dataUrl); }; img.src=dataUrl; }); }
+
+function loadAll(){
+  try{
+    state.profile=JSON.parse(localStorage.getItem(KEYS.profile)||'null');
+    state.researches=JSON.parse(localStorage.getItem(KEYS.researches)||'[]');
+    var s=JSON.parse(localStorage.getItem(KEYS.settings)||'{}');
+    state.settings=Object.assign({theme:'purple',dark:false,showPageNumbers:true,demoMode:false},s);
+    if(state.profile&&!state.profile.accountType) state.profile.accountType='student';
+    if(['purple','blue','green','orange'].indexOf(state.settings.theme)===-1) state.settings.theme='purple';
+    if(!Array.isArray(state.researches)) state.researches=[];
+    state.researches.forEach(function(r){ if(!Array.isArray(r.images)) r.images=[]; if(!r.type) r.type='research'; });
+  }catch(e){ console.error('load error',e); }
+}
+function persistProfile(){ try{ localStorage.setItem(KEYS.profile,JSON.stringify(state.profile)); }catch(e){} }
+function persistSettings(){ try{ localStorage.setItem(KEYS.settings,JSON.stringify(state.settings)); }catch(e){} }
+function persistResearches(){
+  try{
+    var payload=JSON.stringify(state.researches);
+    if(byteSizeOf(payload)>QUOTA_LIMIT){ toast('حافظه پر شده','error'); return false; }
+    localStorage.setItem(KEYS.researches,payload);
+    return true;
+  }catch(e){ toast('ذخیره ناموفق: حافظه پر است','error'); return false; }
+}
+function applyTheme(){
+  document.body.className='';
+  document.body.classList.add('theme-'+(state.settings.theme||'purple'));
+  if(state.settings.dark) document.body.classList.add('dark');
+  var map={purple:'#6d5dfc',blue:'#0ea5e9',green:'#10b981',orange:'#f97316'};
+  var meta=document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.setAttribute('content',map[state.settings.theme]||'#6d5dfc');
+}
+function applyDemoMode(){ document.body.classList.toggle('demo-mode',!!state.settings.demoMode); updateStreakBadge(); }
+function toast(msg,type){ type=type||'info'; var icons={success:'check-circle-2',error:'alert-circle',info:'info'}; var el=document.createElement('div'); el.className='toast '+type; el.innerHTML='<i data-lucide="'+(icons[type]||'info')+'"></i><span>'+escapeHtml(msg)+'</span>'; document.getElementById('toast-container').appendChild(el); if(window.lucide) lucide.createIcons(); requestAnimationFrame(function(){el.classList.add('show');}); setTimeout(function(){el.classList.remove('show');setTimeout(function(){el.remove();},350);},3600); }
+function showConfirm(title,message,onConfirm,danger){ if(danger===undefined) danger=true; var root=document.getElementById('modal-root'); root.innerHTML='<div class="modal-backdrop"><div class="modal"><div class="modal-icon" style="background:'+(danger?'rgba(239,68,68,.12)':'var(--primary-soft)')+';color:'+(danger?'var(--danger)':'var(--primary)')+'"><i data-lucide="'+(danger?'alert-triangle':'help-circle')+'"></i></div><h3>'+escapeHtml(title)+'</h3><p>'+escapeHtml(message)+'</p><div class="modal-actions"><button class="btn btn-ghost" style="border:1px solid var(--border)" onclick="closeModal()">انصراف</button><button class="btn '+(danger?'btn-danger':'btn-primary')+'" id="modal-confirm">تأیید</button></div></div></div>'; if(window.lucide) lucide.createIcons(); var bd=root.querySelector('.modal-backdrop'); requestAnimationFrame(function(){bd.classList.add('show');}); root.querySelector('#modal-confirm').onclick=function(){closeModal();setTimeout(onConfirm,220);}; bd.onclick=function(e){if(e.target===bd)closeModal();}; }
+function closeModal(){ var bd=document.querySelector('.modal-backdrop'); if(bd){ bd.classList.remove('show'); setTimeout(function(){ document.getElementById('modal-root').innerHTML=''; },260); } }
+
+var NO_NAV_PAGES=['page-welcome','page-form','page-content','page-brochure-form','page-preview'];
+function showPage(id){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  var page=document.getElementById(id);
+  if(!page) return;
+  page.classList.add('active');
+  var nav=document.getElementById('bottomnav');
+  nav.classList.toggle('hidden',!state.profile||NO_NAV_PAGES.indexOf(id)!==-1);
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.toggle('active',n.dataset.nav===id);});
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(window.lucide) lucide.createIcons();
+  if(id==='page-dashboard') updateDashboard();
+  if(id==='page-list') renderList();
+  if(id==='page-preview') setTimeout(function(){fitPreview();fitBrochure();},30);
+  if(id==='page-content'||id==='page-brochure-form') setTimeout(function(){triggerResizeAll();setupMicButtons();},50);
+}
+function formGoBack(){ formReadToCurrent(); showPage(formReturnPage); if(formReturnPage==='page-list') renderList(); }
+function contentGoBack(){ contentReadToCurrent(); showPage('page-form'); }
+function brochureFormGoBack(){ showPage(brochureFormReturnPage); if(brochureFormReturnPage==='page-list') renderList(); }
+function previewGoBack(){ showPage(previewReturnPage); if(previewReturnPage==='page-list') renderList(); }
+
+['keyup','click','touchend','focusout','blur'].forEach(function(ev){
+  document.addEventListener(ev,function(e){
+    var t=e.target;
+    if(t&&t.tagName==='TEXTAREA'&&t.id){ try{ lastCursorByField[t.id]={start:t.selectionStart,end:t.selectionEnd}; }catch(err){} }
+  },true);
+});
+
+function setupAutoResize(){
+  document.querySelectorAll('textarea').forEach(function(ta){
+    if(ta._ar) return; ta._ar=true;
+    function resize(){ if(!ta.offsetParent) return; ta.style.height='auto'; ta.style.height=(ta.scrollHeight+4)+'px'; }
+    ta._resizeFn=resize;
+    ta.addEventListener('input',resize);
+    ta.addEventListener('focus',function(){setTimeout(resize,10);});
+  });
+}
+function triggerResizeAll(){ document.querySelectorAll('textarea').forEach(function(ta){ if(ta._resizeFn) ta._resizeFn(); }); }
+
+function setImageTarget(id){
+  imageTarget=id;
+  var ta=document.getElementById(id);
+  if(ta){
+    var c=lastCursorByField[id];
+    try{ if(document.activeElement===ta) c={start:ta.selectionStart,end:ta.selectionEnd}; }catch(e){}
+    if(c) lastCursorByField[id]=c;
+  }
+}
+
+document.getElementById('image-input').addEventListener('change',function(e){
+  var files=[]; if(e.target.files){ for(var i=0;i<e.target.files.length;i++){files.push(e.target.files[i]);} }
+  var target=imageTarget; e.target.value='';
+  if(!files.length) return;
+  if(!target){ toast('ابتدا روی یکی از بخش‌ها کلیک کنید','error'); return; }
+  var ta=document.getElementById(target);
+  if(!ta||!state.current){ toast('بخش پیدا نشد','error'); return; }
+  if(!Array.isArray(state.current.images)) state.current.images=[];
+  var cursor=lastCursorByField[target]||{start:ta.value.length,end:ta.value.length};
+  (function next(idx){
+    if(idx>=files.length){ if(ta._resizeFn) ta._resizeFn(); toast(files.length>1?(files.length+' تصویر اضافه شد'):'تصویر اضافه شد','success'); return; }
+    var file=files[idx];
+    if(file.type.indexOf('image/')!==0){ next(idx+1); return; }
+    if(file.size>15*1024*1024){ toast('حجم بیش از ۱۵ مگ: '+file.name,'error'); next(idx+1); return; }
+    var reader=new FileReader();
+    reader.onload=function(ev){
+      compressImage(ev.target.result,1000,0.6).then(function(compressed){
+        var id='img-'+uuid().slice(0,10);
+        state.current.images.push({id:id,data:compressed,name:file.name});
+        var token='\n{{img:'+id+'}}\n';
+        var val=ta.value;
+        var start=Math.min(cursor.start,val.length);
+        var end=Math.min(cursor.end,val.length);
+        ta.value=val.slice(0,start)+token+val.slice(end);
+        cursor.start=cursor.end=start+token.length;
+        lastCursorByField[target]={start:cursor.start,end:cursor.end};
+        try{ ta.focus(); ta.setSelectionRange(cursor.start,cursor.end); }catch(e){}
+        if(ta._resizeFn) ta._resizeFn();
+        next(idx+1);
+      });
+    };
+    reader.onerror=function(){ toast('خطا در خواندن','error'); next(idx+1); };
+    reader.readAsDataURL(file);
+  })(0);
+});
+
+document.getElementById('brochure-cover-input').addEventListener('change',function(e){
+  var file=e.target.files&&e.target.files[0]; e.target.value='';
+  if(!file) return;
+  if(!state.current||state.current.type!=='brochure'){ toast('ابتدا یک بروشور بسازید','error'); return; }
+  if(file.size>15*1024*1024){ toast('حجم زیاد است','error'); return; }
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    compressImage(ev.target.result,1200,0.7).then(function(compressed){
+      if(!state.current.brochureData) state.current.brochureData={};
+      state.current.brochureData.coverImage=compressed;
+      updateCoverPreview();
+      toast('تصویر جلد اضافه شد','success');
+    });
+  };
+  reader.readAsDataURL(file);
+});
+function updateCoverPreview(){
+  var preview=document.getElementById('b-cover-preview'); if(!preview) return;
+  var cover=(state.current&&state.current.brochureData&&state.current.brochureData.coverImage)||null;
+  if(cover) preview.innerHTML='<div class="img-preview-item"><img src="'+cover+'" alt=""><button onclick="removeCoverImage()" title="حذف">×</button></div>';
+  else preview.innerHTML='';
+}
+function removeCoverImage(){ if(state.current&&state.current.brochureData){ state.current.brochureData.coverImage=null; updateCoverPreview(); } }
+
+function setupWelcome(){
+  var seg=document.getElementById('w-account-type');
+  seg.querySelectorAll('button').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      seg.querySelectorAll('button').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      welcomeAccountType=btn.dataset.type;
+      document.getElementById('w-student-fields').style.display=welcomeAccountType==='student'?'':'none';
+      document.getElementById('w-public-fields').style.display=welcomeAccountType==='public'?'':'none';
+    });
+  });
+  var grid=document.getElementById('w-theme-grid');
+  grid.querySelectorAll('.theme-card').forEach(function(card){
+    card.classList.toggle('selected',card.dataset.theme===state.settings.theme);
+    card.addEventListener('click',function(){
+      grid.querySelectorAll('.theme-card').forEach(function(c){c.classList.remove('selected');});
+      card.classList.add('selected');
+      state.settings.theme=card.dataset.theme;
+      applyTheme();
+    });
+  });
+}
+function createAccount(){
+  var name=document.getElementById('w-name').value.trim();
+  if(!name){ toast('نام را وارد کنید','error'); return; }
+  var profile={name:name,accountType:welcomeAccountType};
+  if(welcomeAccountType==='student'){
+    profile.school=document.getElementById('w-school').value.trim();
+    profile.className=document.getElementById('w-class').value.trim();
+    profile.grade=document.getElementById('w-grade').value.trim();
+  } else {
+    profile.organization=document.getElementById('w-org').value.trim();
+    profile.role=document.getElementById('w-role').value.trim();
+  }
+  state.profile=profile;
+  persistProfile(); persistSettings();
+  toast('حساب ساخته شد','success');
+  setTimeout(function(){ updateDashboard(); showPage('page-dashboard'); },400);
+}
+function updateDashboard(){
+  if(!state.profile) return;
+  var first=(state.profile.name||'').split(' ')[0]||'';
+  document.getElementById('dash-greeting').textContent='سلام، '+first+' 👋';
+  document.getElementById('dash-sub').textContent=state.profile.accountType==='public'?'امروز چه سندی آماده می‌کنیم؟':'امروز چه تحقیقی می‌نویسیم؟';
+  var count=state.researches.length;
+  document.getElementById('dash-count').textContent=count===0?'هنوز سندی نساخته‌اید':count+' سند ذخیره شده';
+  updateStreakBadge();
+}
+function applyFormLabels(){
+  var isStudent=((state.profile&&state.profile.accountType)||'student')==='student';
+  document.getElementById('f-researcher-label').textContent=isStudent?'نام تحقیق‌کننده':'نویسنده';
+  document.getElementById('f-title-label').textContent=isStudent?'نام تحقیق':'عنوان';
+  document.getElementById('f-school-label').textContent=isStudent?'نام مدرسه':'نام سازمان';
+  document.getElementById('f-group-label').textContent=isStudent?'اعضای گروه (اختیاری)':'همکاران (اختیاری)';
+  document.getElementById('f-subject-label').textContent=isStudent?'نام درس':'موضوع';
+  document.getElementById('f-teacher-label').textContent=isStudent?'نام معلم':'مسئول';
+  document.getElementById('f-class-wrap').style.display=isStudent?'':'none';
+  document.getElementById('f-grade-wrap').style.display=isStudent?'':'none';
+}
+
+function startNewResearch(){
+  formReturnPage='page-dashboard';
+  var p=state.profile||{};
+  state.current={id:null,type:'research',researcher:p.name||'',title:'',school:p.school||p.organization||'',group:'',className:p.className||'',subject:'',teacher:'',grade:p.grade||'',intro:'',abstract:'',body:'',conclusion:'',sources:'',showBismillah:true,showThanks:true,showBorder:true,images:[],brochureData:null};
+  applyFormLabels(); fillForm(); showPage('page-form');
+}
+function editResearch(id){
+  var r=findResearch(id); if(!r) return;
+  formReturnPage='page-list';
+  state.current=JSON.parse(JSON.stringify(r));
+  if(!Array.isArray(state.current.images)) state.current.images=[];
+  if(!state.current.type) state.current.type='research';
+  applyFormLabels(); fillForm(); showPage('page-form');
+}
+function fillForm(){
+  var c=state.current||{};
+  var map={'f-researcher':'researcher','f-title':'title','f-school':'school','f-group':'group','f-class':'className','f-subject':'subject','f-teacher':'teacher','f-grade':'grade'};
+  Object.keys(map).forEach(function(elId){ var el=document.getElementById(elId); if(el) el.value=c[map[elId]]||''; });
+}
+function formReadToCurrent(){
+  if(!state.current) return;
+  var c=state.current;
+  c.researcher=document.getElementById('f-researcher').value.trim();
+  c.title=document.getElementById('f-title').value.trim();
+  c.school=document.getElementById('f-school').value.trim();
+  c.group=document.getElementById('f-group').value.trim();
+  c.className=document.getElementById('f-class').value.trim();
+  c.subject=document.getElementById('f-subject').value.trim();
+  c.teacher=document.getElementById('f-teacher').value.trim();
+  c.grade=document.getElementById('f-grade').value.trim();
+}
+function formContinue(){ if(!state.current) return; formReadToCurrent(); fillContent(); showPage('page-content'); }
+
+function fillContent(){
+  if(!state.current) return;
+  var c=state.current;
+  document.getElementById('c-intro').value=c.intro||'';
+  document.getElementById('c-abstract').value=c.abstract||'';
+  document.getElementById('c-body').value=c.body||'';
+  document.getElementById('c-conclusion').value=c.conclusion||'';
+  document.getElementById('c-sources').value=c.sources||'';
+  document.getElementById('t-bismillah').checked=c.showBismillah!==false;
+  document.getElementById('t-thanks').checked=c.showThanks!==false;
+  document.getElementById('t-border').checked=c.showBorder!==false;
+  setTimeout(triggerResizeAll,20);
+}
+function contentReadToCurrent(){
+  if(!state.current) return;
+  var c=state.current;
+  c.intro=document.getElementById('c-intro').value;
+  c.abstract=document.getElementById('c-abstract').value;
+  c.body=document.getElementById('c-body').value;
+  c.conclusion=document.getElementById('c-conclusion').value;
+  c.sources=document.getElementById('c-sources').value;
+  c.showBismillah=document.getElementById('t-bismillah').checked;
+  c.showThanks=document.getElementById('t-thanks').checked;
+  c.showBorder=document.getElementById('t-border').checked;
+}
+function cleanupImages(){
+  if(!state.current||!Array.isArray(state.current.images)) return;
+  var fields=[state.current.intro,state.current.abstract,state.current.body,state.current.conclusion,state.current.sources];
+  if(state.current.brochureData){
+    var bd=state.current.brochureData;
+    fields.push(bd.insidePanel1,bd.insidePanel2,bd.insidePanel3,bd.backText);
+  }
+  var texts=fields.filter(Boolean).join(' ');
+  var used={},re=/\{\{img:([a-zA-Z0-9_-]+)\}\}/g,m;
+  while((m=re.exec(texts))!==null) used[m[1]]=true;
+  state.current.images=state.current.images.filter(function(img){return used[img.id];});
+}
+function saveCurrent(){
+  var c=state.current; if(!c) return false;
+  cleanupImages();
+  var hasContent=(c.title&&c.title.trim())||(c.intro&&c.intro.trim())||(c.abstract&&c.abstract.trim())||(c.body&&c.body.trim())||(c.conclusion&&c.conclusion.trim())||(c.sources&&c.sources.trim());
+  if(!hasContent){ toast('حداقل یکی از بخش‌ها را پر کنید','error'); return false; }
+  var now=new Date().toISOString();
+  var found=false,backup=null;
+  if(c.id){
+    for(var i=0;i<state.researches.length;i++){
+      if(state.researches[i].id===c.id){
+        backup=state.researches[i];
+        state.researches[i]=JSON.parse(JSON.stringify(Object.assign({},c,{updatedAt:now})));
+        found=true; break;
+      }
+    }
+  }
+  if(!found){
+    c.id=uuid(); c.createdAt=now; c.updatedAt=now;
+    if(!c.type) c.type='research';
+    state.researches.push(JSON.parse(JSON.stringify(c)));
+  }
+  if(!persistResearches()){
+    if(found&&backup){ for(var j=0;j<state.researches.length;j++){ if(state.researches[j].id===backup.id){state.researches[j]=backup;break;} } }
+    else { state.researches=state.researches.filter(function(x){return x.id!==c.id;}); }
+    return false;
+  }
+  updateStreak();
+  try{ localStorage.removeItem('autosave'); }catch(e){}
+  return true;
+}
+function contentSaveAndPreview(){ contentReadToCurrent(); if(!saveCurrent()) return; previewReturnPage='page-content'; buildSheet(); showPage('page-preview'); showResearchView(); }
+function contentSaveOnly(){ contentReadToCurrent(); if(saveCurrent()) toast('ذخیره شد','success'); }
+function editCurrentResearch(){
+  if(!state.current) return;
+  if(state.current.type==='brochure'){ brochureFormReturnPage='page-list'; fillBrochureForm(); showPage('page-brochure-form'); }
+  else { formReturnPage='page-dashboard'; applyFormLabels(); fillForm(); showPage('page-form'); }
+}
+
+function buildSheet(){
+  var r=state.current; if(!r) return;
+  var scaler=document.getElementById('sheet-scaler');
+  var showNums=state.settings.showPageNumbers;
+  var images=Array.isArray(r.images)?r.images:[];
+  var isPublic=(state.profile&&state.profile.accountType)==='public';
+  var sections=[];
+  var sec1='';
+  if(r.showBismillah) sec1+='<div class="bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِیم</div>';
+  var info=[
+    [isPublic?'عنوان':'نام تحقیق',r.title],
+    [isPublic?'نویسنده':'نام تحقیق‌کننده',r.researcher],
+    [isPublic?'سازمان':'نام مدرسه',r.school],
+    [isPublic?'همکاران':'اعضای گروه',r.group],
+    ['کلاس',r.className],
+    [isPublic?'موضوع':'نام درس',r.subject],
+    [isPublic?'مسئول':'نام معلم',r.teacher],
+    ['پایه',r.grade]
+  ].filter(function(p){return p[1]&&String(p[1]).trim();});
+  if(info.length){
+    sec1+='<table class="info-table"><tbody>';
+    info.forEach(function(p){ sec1+='<tr><th>'+escapeHtml(p[0])+'</th><td>'+escapeHtml(p[1])+'</td></tr>'; });
+    sec1+='</tbody></table>';
+  }
+  if(sec1.trim()) sections.push({html:sec1});
+  if(r.intro&&r.intro.trim()) sections.push({html:'<h2>مقدمه</h2>'+renderInlineText(r.intro,images)});
+  if(r.abstract&&r.abstract.trim()) sections.push({html:'<h2>چکیده</h2>'+renderInlineText(r.abstract,images)});
+  if(r.body&&r.body.trim()){ var chunks=splitIntoPages(r.body,1800); for(var i=0;i<chunks.length;i++){ sections.push({html:'<h2>متن تحقیق</h2>'+renderInlineText(chunks[i],images)}); } }
+  if(r.conclusion&&r.conclusion.trim()) sections.push({html:'<h2>نتیجه‌گیری</h2>'+renderInlineText(r.conclusion,images)});
+  if(r.sources&&r.sources.trim()) sections.push({html:'<h2>منابع</h2>'+renderInlineText(r.sources,images)});
+  var unused=getUnusedImages(r);
+  if(unused.length) sections.push({html:'<h2>تصاویر</h2><div class="images-gallery">'+unused.map(function(img){return '<img src="'+img.data+'" alt="">';}).join('')+'</div>'});
+  if(r.showThanks&&sections.length) sections[sections.length-1].html+='<div class="thanks">از توجه شما سپاسگزارم</div>';
+  var total=sections.length;
+  scaler.innerHTML=sections.map(function(sec,i){
+    var cls='sheet-section'+(r.showBorder?'':' no-border');
+    var pn=showNums?'<div class="page-number">صفحه '+(i+1)+' از '+total+'</div>':'';
+    return '<div class="'+cls+'">'+sec.html+pn+'</div>';
+  }).join('');
+  if(window.lucide) lucide.createIcons();
+  setTimeout(fitPreview,50);
+}
+function fitPreview(){
+  var container=document.getElementById('sheet-container'),scaler=document.getElementById('sheet-scaler');
+  if(!container||!scaler) return;
+  scaler.style.transform='';scaler.style.transformOrigin='top right';container.style.height='';
+  var first=scaler.querySelector('.sheet-section'); if(!first) return;
+  var nw=first.offsetWidth||794, aw=container.clientWidth-4;
+  if(nw>aw){ var s=aw/nw; scaler.style.transform='scale('+s+')'; container.style.height=(scaler.scrollHeight*s)+'px'; }
+}
+function autoBrochureData(r){
+  function clip(t,max){ var s=stripTokens(t); return s?truncate(s,max):''; }
+  return {coverTitle:(r.title||'').trim()||'بدون عنوان',coverSubtitle:clip(r.abstract||r.intro,120),coverImage:null,coverColor:null,author:(r.researcher||'').trim()||'ناشناس',organization:(r.school||'').trim(),date:faDate(new Date().toISOString()),insidePanel1Title:'مقدمه',insidePanel1:clip(r.intro,500),insidePanel2Title:'متن تحقیق',insidePanel2:clip(r.body,700),insidePanel3Title:'نتیجه‌گیری',insidePanel3:clip((r.conclusion||'')+'\n\n'+(r.sources||''),500),backText:clip(r.sources,300),footer:r.showThanks?'از توجه شما سپاسگزارم':'',fontSize:9};
+}
+function buildBrochure(){
+  var r=state.current; if(!r) return;
+  var scaler=document.getElementById('brochure-scaler');
+  var isPublic=(state.profile&&state.profile.accountType)==='public';
+  var data=r.brochureData||autoBrochureData(r);
+  var images=Array.isArray(r.images)?r.images:[];
+  var bf=parseInt(data.fontSize||9);
+  var coverBg=data.coverColor?'background:linear-gradient(135deg,'+data.coverColor+' 0%,'+shiftColor(data.coverColor,25)+' 100%);':'background:linear-gradient(135deg,var(--primary),var(--primary-2));';
+  var flapBg=data.coverColor?'background:linear-gradient(135deg,'+shiftColor(data.coverColor,30)+' 0%,'+shiftColor(data.coverColor,55)+' 100%);':'background:linear-gradient(135deg,var(--primary-2),#c4b5fd);';
+  var frontCover='<div class="brochure-panel panel-front-cover" style="'+coverBg+'"><div class="front-top"><span>'+(isPublic?'سند':'تحقیق')+'</span><span>'+escapeHtml(data.date||'')+'</span></div><div class="front-center"><h1 class="front-title">'+escapeHtml(data.coverTitle||'')+'</h1>'+(data.coverSubtitle?'<p class="front-subtitle">'+escapeHtml(data.coverSubtitle)+'</p>':'')+(data.coverImage?'<div class="front-image"><img src="'+data.coverImage+'" alt=""></div>':'')+'</div><div class="front-bottom"><div class="front-author">'+escapeHtml(data.author||'')+'</div>'+(data.organization?'<div class="front-org">'+escapeHtml(data.organization)+'</div>':'')+'</div></div>';
+  var flap='<div class="brochure-panel panel-flap" style="'+flapBg+'"><div class="flap-top">'+(isPublic?'سند':'تحقیق')+'</div><div class="flap-center">'+(data.coverSubtitle?'<h3 class="flap-title">'+escapeHtml(data.coverSubtitle)+'</h3>':'')+'<p class="flap-text">'+escapeHtml(data.author||'')+(data.organization?' • '+escapeHtml(data.organization):'')+'</p></div><div class="flap-bottom">'+escapeHtml(data.date||'')+'</div></div>';
+  var backCover='<div class="brochure-panel panel-back-cover"><div class="back-top"><span>'+(isPublic?'سند':'تحقیق')+'</span><span>'+escapeHtml(data.date||'')+'</span></div><div class="back-center">'+(data.backText?'<h3>منابع</h3><p>'+renderInlineText(data.backText,images)+'</p>':'<p style="color:#999">—</p>')+'</div><div class="back-bottom"><div><b>'+escapeHtml(data.coverTitle||'')+'</b></div><div>'+escapeHtml(data.author||'')+'</div>'+(data.footer?'<div class="back-thanks">'+escapeHtml(data.footer)+'</div>':'')+'</div></div>';
+  function panel(t,txt){ return '<div class="brochure-panel">'+(t?'<h3>'+escapeHtml(t)+'</h3>':'')+(txt?renderInlineText(txt,images):'<p style="color:#999;font-size:'+bf+'pt">—</p>')+'</div>'; }
+  var p1=panel(data.insidePanel1Title,data.insidePanel1);
+  var p2=panel(data.insidePanel2Title,data.insidePanel2);
+  var p3=panel(data.insidePanel3Title,data.insidePanel3);
+  var fs='--bf:'+bf+'pt;';
+  scaler.innerHTML='<div class="brochure-page" style="'+fs+'">'+frontCover+flap+backCover+'</div><div class="brochure-page" style="'+fs+'">'+p1+p2+p3+'</div>';
+  if(window.lucide) lucide.createIcons();
+  setTimeout(fitBrochure,50);
+}
+function fitBrochure(){
+  var container=document.getElementById('brochure-container'),scaler=document.getElementById('brochure-scaler');
+  if(!container||!scaler) return;
+  scaler.style.transform='';scaler.style.transformOrigin='top right';container.style.height='';
+  var first=scaler.querySelector('.brochure-page'); if(!first) return;
+  var nw=first.offsetWidth||1123, aw=container.clientWidth-4;
+  if(nw>aw){ var s=aw/nw; scaler.style.transform='scale('+s+')'; container.style.height=(scaler.scrollHeight*s)+'px'; }
+}
+function showBrochure(){ buildBrochure(); document.getElementById('view-research').style.display='none'; document.getElementById('view-brochure').style.display=''; document.getElementById('preview-subtitle').textContent='پیش‌نمایش بروشور'; currentPreviewView='brochure'; setTimeout(fitBrochure,60); }
+function showResearchView(){ document.getElementById('view-research').style.display=''; document.getElementById('view-brochure').style.display='none'; document.getElementById('preview-subtitle').textContent='سند شما آماده است'; currentPreviewView='research'; setTimeout(fitPreview,60); }
+
+function startNewBrochure(){
+  brochureFormReturnPage='page-dashboard';
+  state.current={id:null,type:'brochure',title:'',createdAt:null,updatedAt:null,images:[],brochureData:null};
+  document.getElementById('b-title').value='';
+  document.getElementById('b-subtitle').value='';
+  document.getElementById('b-author').value=(state.profile&&state.profile.name)||'';
+  document.getElementById('b-org').value=(state.profile&&(state.profile.school||state.profile.organization))||'';
+  document.getElementById('b-panel1-title').value='';
+  document.getElementById('b-panel1').value='';
+  document.getElementById('b-panel2-title').value='';
+  document.getElementById('b-panel2').value='';
+  document.getElementById('b-panel3-title').value='';
+  document.getElementById('b-panel3').value='';
+  document.getElementById('b-back').value='';
+  document.getElementById('b-footer').value='از توجه شما سپاسگزارم';
+  document.getElementById('b-fontsize').value='9';
+  document.getElementById('b-color').value='#6d5dfc';
+  setupColorSwatches('#6d5dfc');
+  updateCoverPreview();
+  showPage('page-brochure-form');
+}
+function editBrochure(id){
+  var r=findResearch(id); if(!r||r.type!=='brochure') return;
+  state.current=JSON.parse(JSON.stringify(r));
+  if(!Array.isArray(state.current.images)) state.current.images=[];
+  brochureFormReturnPage='page-list'; fillBrochureForm(); showPage('page-brochure-form');
+}
+function fillBrochureForm(){
+  var d=(state.current&&state.current.brochureData)||{};
+  document.getElementById('b-title').value=d.coverTitle||'';
+  document.getElementById('b-subtitle').value=d.coverSubtitle||'';
+  document.getElementById('b-author').value=d.author||'';
+  document.getElementById('b-org').value=d.organization||'';
+  document.getElementById('b-panel1-title').value=d.insidePanel1Title||'';
+  document.getElementById('b-panel1').value=d.insidePanel1||'';
+  document.getElementById('b-panel2-title').value=d.insidePanel2Title||'';
+  document.getElementById('b-panel2').value=d.insidePanel2||'';
+  document.getElementById('b-panel3-title').value=d.insidePanel3Title||'';
+  document.getElementById('b-panel3').value=d.insidePanel3||'';
+  document.getElementById('b-back').value=d.backText||'';
+  document.getElementById('b-footer').value=d.footer||'';
+  document.getElementById('b-fontsize').value=d.fontSize||9;
+  var color=d.coverColor||'#6d5dfc';
+  document.getElementById('b-color').value=color;
+  setupColorSwatches(color);
+  updateCoverPreview();
+  setTimeout(triggerResizeAll,20);
+}
+function setupColorSwatches(currentColor){
+  var c=document.getElementById('b-color-swatches'); if(!c) return;
+  c.querySelectorAll('.swatch').forEach(function(sw){
+    sw.classList.toggle('active',sw.dataset.color.toLowerCase()===currentColor.toLowerCase());
+    if(!sw._bound){
+      sw._bound=true;
+      sw.addEventListener('click',function(){
+        c.querySelectorAll('.swatch').forEach(function(s){s.classList.remove('active');});
+        sw.classList.add('active');
+        document.getElementById('b-color').value=sw.dataset.color;
+      });
+    }
+  });
+  var ci=document.getElementById('b-color');
+  if(ci&&!ci._bound){
+    ci._bound=true;
+    ci.addEventListener('input',function(){
+      c.querySelectorAll('.swatch').forEach(function(s){s.classList.remove('active');});
+      var m=c.querySelector('.swatch[data-color="'+ci.value.toLowerCase()+'"]');
+      if(m) m.classList.add('active');
+    });
+  }
+}
+function saveBrochureForm(preview){
+  var title=document.getElementById('b-title').value.trim();
+  if(!title){ toast('عنوان جلد را وارد کنید','error'); return; }
+  var color=document.getElementById('b-color').value||'#6d5dfc';
+  var fs=parseInt(document.getElementById('b-fontsize').value)||9;
+  var data={
+    coverTitle:title,coverSubtitle:document.getElementById('b-subtitle').value.trim(),
+    author:document.getElementById('b-author').value.trim(),
+    organization:document.getElementById('b-org').value.trim(),
+    date:(state.current&&state.current.brochureData&&state.current.brochureData.date)||faDate(new Date().toISOString()),
+    coverImage:(state.current&&state.current.brochureData&&state.current.brochureData.coverImage)||null,
+    coverColor:color,
+    insidePanel1Title:document.getElementById('b-panel1-title').value.trim(),
+    insidePanel1:document.getElementById('b-panel1').value,
+    insidePanel2Title:document.getElementById('b-panel2-title').value.trim(),
+    insidePanel2:document.getElementById('b-panel2').value,
+    insidePanel3Title:document.getElementById('b-panel3-title').value.trim(),
+    insidePanel3:document.getElementById('b-panel3').value,
+    backText:document.getElementById('b-back').value,
+    footer:document.getElementById('b-footer').value.trim(),
+    fontSize:fs
+  };
+  var c=state.current;
+  if(!c){ c=state.current={id:null,type:'brochure',images:[]}; }
+  c.title=title; c.brochureData=data; c.type='brochure';
+  if(!Array.isArray(c.images)) c.images=[];
+  cleanupImages();
+  var now=new Date().toISOString();
+  var found=false,backup=null;
+  if(c.id){
+    for(var i=0;i<state.researches.length;i++){
+      if(state.researches[i].id===c.id){
+        backup=state.researches[i];
+        state.researches[i]=JSON.parse(JSON.stringify(Object.assign({},c,{updatedAt:now})));
+        found=true; break;
+      }
+    }
+  }
+  if(!found){ c.id=uuid(); c.createdAt=now; c.updatedAt=now; state.researches.push(JSON.parse(JSON.stringify(c))); }
+  if(!persistResearches()){
+    if(found&&backup){ for(var j=0;j<state.researches.length;j++){ if(state.researches[j].id===backup.id){state.researches[j]=backup;break;} } }
+    else { state.researches=state.researches.filter(function(x){return x.id!==c.id;}); }
+    return;
+  }
+  updateStreak();
+  toast('بروشور ذخیره شد','success');
+  if(preview){ previewReturnPage='page-list'; buildBrochure(); showPage('page-preview'); showBrochure(); }
+}
+function unscaleForExport(){
+  var a=document.getElementById('sheet-scaler'),b=document.getElementById('brochure-scaler');
+  var ca=document.getElementById('sheet-container'),cb=document.getElementById('brochure-container');
+  var saved={aT:a?a.style.transform:'',aH:ca?ca.style.height:'',bT:b?b.style.transform:'',bH:cb?cb.style.height:''};
+  if(a) a.style.transform='none';
+  if(ca) ca.style.height='';
+  if(b) b.style.transform='none';
+  if(cb) cb.style.height='';
+  return saved;
+}
+function rescaleAfterExport(saved){
+  var a=document.getElementById('sheet-scaler'),b=document.getElementById('brochure-scaler');
+  var ca=document.getElementById('sheet-container'),cb=document.getElementById('brochure-container');
+  if(a) a.style.transform=saved.aT;
+  if(ca) ca.style.height=saved.aH;
+  if(b) b.style.transform=saved.bT;
+  if(cb) cb.style.height=saved.bH;
+}
+function downloadPDF(){
+  var scaler=document.getElementById('sheet-scaler');
+  if(!scaler||!scaler.children.length){ toast('سندی نیست','error'); return; }
+  var title=((state.current&&state.current.title)||'تحقیق').trim()||'تحقیق';
+  toast('در حال ساخت PDF...','info');
+  var saved=unscaleForExport();
+  setTimeout(function(){
+    html2pdf().set({margin:0,filename:title+'.pdf',image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,useCORS:true,backgroundColor:'#fff',logging:false},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}}).from(scaler).save().then(function(){ toast('PDF دانلود شد','success'); }).catch(function(e){ console.error(e); toast('خطا در PDF','error'); }).then(function(){ rescaleAfterExport(saved); });
+  },30);
+}
+function downloadBrochurePDF(){
+  var scaler=document.getElementById('brochure-scaler');
+  if(!scaler||!scaler.querySelector('.brochure-page')){ toast('بروشور ساخته نشده','error'); return; }
+  var title=((state.current&&(state.current.title||(state.current.brochureData&&state.current.brochureData.coverTitle)))||'بروشور').trim()||'بروشور';
+  toast('در حال ساخت PDF...','info');
+  var saved=unscaleForExport();
+  setTimeout(function(){
+    html2pdf().set({margin:0,filename:title+'-بروشور.pdf',image:{type:'jpeg',quality:0.98},html2canvas:{scale:2,useCORS:true,backgroundColor:'#fff',logging:false},jsPDF:{unit:'mm',format:'a4',orientation:'landscape'},pagebreak:{mode:['css','legacy']}}).from(scaler).save().then(function(){ toast('PDF دانلود شد','success'); }).catch(function(e){ console.error(e); toast('خطا در PDF','error'); }).then(function(){ rescaleAfterExport(saved); });
+  },30);
+}
+function setPrintPage(size,orient){ var e=document.getElementById('print-size-style'); if(e) e.remove(); var s=document.createElement('style'); s.id='print-size-style'; s.textContent='@page{size:'+size+' '+orient+';margin:0}'; document.head.appendChild(s); }
+function printResearch(){
+  setPrintPage('A4','portrait');
+  var a=document.getElementById('sheet-scaler'),ca=document.getElementById('sheet-container');
+  var pT=a?a.style.transform:'',pH=ca?ca.style.height:'';
+  if(a) a.style.transform='none'; if(ca) ca.style.height='';
+  document.getElementById('view-research').style.display=''; document.getElementById('view-brochure').style.display='none';
+  document.body.classList.add('print-research-mode');
+  setTimeout(function(){ window.print(); setTimeout(function(){ document.body.classList.remove('print-research-mode'); if(a) a.style.transform=pT; if(ca) ca.style.height=pH; setTimeout(fitPreview,100); },400); },100);
+}
+function printBrochure(){
+  setPrintPage('A4','landscape');
+  var b=document.getElementById('brochure-scaler'),cb=document.getElementById('brochure-container');
+  var pT=b?b.style.transform:'',pH=cb?cb.style.height:'';
+  if(b) b.style.transform='none'; if(cb) cb.style.height='';
+  document.getElementById('view-research').style.display='none'; document.getElementById('view-brochure').style.display='';
+  document.body.classList.add('print-brochure-mode');
+  setTimeout(function(){ window.print(); setTimeout(function(){ document.body.classList.remove('print-brochure-mode'); if(b) b.style.transform=pT; if(cb) cb.style.height=pH; setTimeout(fitBrochure,100); },400); },100);
+}
+
+function setListFilter(f){ document.querySelectorAll('#list-filter button').forEach(function(b){b.classList.toggle('active',b.dataset.filter===f);}); renderList(); }
+function renderList(){
+  var container=document.getElementById('list-container');
+  var sub=document.getElementById('list-count-sub');
+  if(!state.researches.length){
+    sub.textContent='';
+    container.innerHTML='<div class="empty"><div class="empty-icon"><i data-lucide="file-text"></i></div><h3>هنوز سندی نساخته‌اید</h3><p>اولین سند خود را بسازید</p><button class="btn btn-primary" style="max-width:280px;margin:0 auto" onclick="startNewResearch()"><i data-lucide="plus"></i> ساخت سند جدید</button></div>';
+    if(window.lucide) lucide.createIcons(); return;
+  }
+  var q=(document.getElementById('list-search')?document.getElementById('list-search').value:'').toLowerCase().trim();
+  var activeF=document.querySelector('#list-filter button.active');
+  var filter=activeF?activeF.dataset.filter:'all';
+  var filtered=state.researches.slice();
+  if(filter==='research') filtered=filtered.filter(function(r){return (r.type||'research')==='research';});
+  if(filter==='brochure') filtered=filtered.filter(function(r){return r.type==='brochure';});
+  if(q){ filtered=filtered.filter(function(r){ var hay=((r.title||'')+' '+(r.subject||'')+' '+(r.teacher||'')+' '+((r.brochureData&&r.brochureData.coverTitle)||'')).toLowerCase(); return hay.indexOf(q)!==-1; }); }
+  if(!filtered.length){
+    sub.textContent='';
+    container.innerHTML='<div class="empty"><div class="empty-icon"><i data-lucide="search-x"></i></div><h3>نتیجه‌ای پیدا نشد</h3><p>جستجو یا فیلتر را تغییر دهید</p></div>';
+    if(window.lucide) lucide.createIcons(); return;
+  }
+  sub.textContent=filtered.length+' سند';
+  var sorted=filtered.slice().sort(function(a,b){return new Date(b.updatedAt||0)-new Date(a.updatedAt||0);});
+  container.innerHTML=sorted.map(function(r,i){
+    var isBrochure=r.type==='brochure';
+    var title=isBrochure?((r.brochureData&&r.brochureData.coverTitle)||r.title||'بروشور بدون عنوان'):((r.title&&r.title.trim())?r.title:'سند بدون عنوان');
+    var meta=[];
+    if(isBrochure){
+      meta.push('<span><i data-lucide="newspaper"></i>بروشور</span>');
+      if(r.brochureData&&r.brochureData.author) meta.push('<span><i data-lucide="user"></i>'+escapeHtml(r.brochureData.author)+'</span>');
+    } else {
+      if(r.subject) meta.push('<span><i data-lucide="book-open"></i>'+escapeHtml(r.subject)+'</span>');
+      if(r.teacher) meta.push('<span><i data-lucide="user"></i>'+escapeHtml(r.teacher)+'</span>');
+    }
+    var ds=faDate(r.updatedAt||r.createdAt); if(ds) meta.push('<span><i data-lucide="calendar"></i>'+ds+'</span>');
+    var ti=isBrochure?'newspaper':'file-text';
+    var editFn=isBrochure?'editBrochure':'editResearch';
+    return '<div class="list-item" style="animation-delay:'+(i*50)+'ms"><h3><i data-lucide="'+ti+'" class="type-icon"></i>'+escapeHtml(title)+'</h3><div class="meta">'+meta.join('')+'</div><div class="list-actions"><button class="icon-btn" onclick="previewFromList(\''+r.id+'\')"><i data-lucide="eye"></i></button><button class="icon-btn" onclick="'+editFn+'(\''+r.id+'\')"><i data-lucide="pencil"></i></button><button class="icon-btn" onclick="confirmDelete(\''+r.id+'\')" style="color:var(--danger)"><i data-lucide="trash-2"></i></button></div></div>';
+  }).join('');
+  if(window.lucide) lucide.createIcons();
+}
+function previewFromList(id){
+  var r=findResearch(id); if(!r) return;
+  state.current=JSON.parse(JSON.stringify(r));
+  if(!Array.isArray(state.current.images)) state.current.images=[];
+  if(!state.current.type) state.current.type='research';
+  previewReturnPage='page-list';
+  if(state.current.type==='brochure'){ showPage('page-preview'); showBrochure(); }
+  else { buildSheet(); showPage('page-preview'); showResearchView(); }
+}
+function confirmDelete(id){
+  var r=findResearch(id); if(!r) return;
+  var title=r.type==='brochure'?((r.brochureData&&r.brochureData.coverTitle)||r.title||'این بروشور'):((r.title&&r.title.trim())?r.title:'این سند');
+  showConfirm('حذف','«'+title+'» حذف شود؟ این عمل بازگشت‌پذیر نیست.',function(){
+    state.researches=state.researches.filter(function(x){return x.id!==id;});
+    persistResearches(); toast('حذف شد','success'); renderList(); updateDashboard();
+  });
+}
+
+function openSettings(){
+  var root=document.getElementById('modal-root');
+  var themes=[{key:'purple',label:'بنفش',t1:'#6d5dfc',t2:'#a78bfa'},{key:'blue',label:'آبی',t1:'#0ea5e9',t2:'#38bdf8'},{key:'green',label:'سبز',t1:'#10b981',t2:'#34d399'},{key:'orange',label:'نارنجی',t1:'#f97316',t2:'#fb923c'}];
+  var p=state.profile||{}; var isPublic=p.accountType==='public';
+  var html='<div class="modal-backdrop"><div class="modal settings-modal"><h3><span>تنظیمات</span><button class="icon-btn" style="width:36px;height:36px" onclick="closeModal()"><i data-lucide="x"></i></button></h3>'+
+    '<div class="settings-section"><h4>نوع استفاده</h4><div class="segmented" id="s-account-type"><button data-type="student" class="'+(!isPublic?'active':'')+'">دانش‌آموزی</button><button data-type="public" class="'+(isPublic?'active':'')+'">عمومی</button></div></div>'+
+    '<div class="settings-section"><h4>پروفایل</h4><div class="field"><label>نام</label><input type="text" id="s-name" value="'+escapeHtml(p.name||'')+'"></div>';
+  if(!isPublic){
+    html+='<div class="field"><label>مدرسه</label><input type="text" id="s-school" value="'+escapeHtml(p.school||'')+'"></div><div class="field" id="s-class-wrap"><label>کلاس</label><input type="text" id="s-class" value="'+escapeHtml(p.className||'')+'"></div><div class="field" style="margin-bottom:0"><label>پایه</label><input type="text" id="s-grade" value="'+escapeHtml(p.grade||'')+'"></div>';
+  } else {
+    html+='<div class="field"><label>سازمان</label><input type="text" id="s-school" value="'+escapeHtml(p.organization||'')+'"></div><div class="field" style="margin-bottom:0"><label>سمت</label><input type="text" id="s-grade" value="'+escapeHtml(p.role||'')+'"></div>';
+  }
+  html+='</div><div class="settings-section"><h4>تم</h4><div class="theme-grid" id="s-theme-grid">'+themes.map(function(t){return '<button class="theme-card '+(state.settings.theme===t.key?'selected':'')+'" data-theme="'+t.key+'" style="--t1:'+t.t1+';--t2:'+t.t2+'"><span class="theme-dot"></span><span>'+t.label+'</span></button>';}).join('')+'</div></div>'+
+    '<div class="settings-section"><h4>ظاهر</h4><div class="toggle-row" style="border:none;padding:8px 0"><span class="label">حالت شب</span><label class="switch"><input type="checkbox" id="s-dark" '+(state.settings.dark?'checked':'')+'><span class="switch-track"></span></label></div><div class="toggle-row" style="border:none;padding:8px 0"><span class="label">نمایش شماره صفحه</span><label class="switch"><input type="checkbox" id="s-showpage" '+(state.settings.showPageNumbers?'checked':'')+'><span class="switch-track"></span></label></div></div>'+
+    '<div class="settings-section"><h4>🎮 حالت دمو (پیشرفته)</h4><p class="muted" style="font-size:12px;margin-bottom:10px">با فعال‌سازی، تمام امکانات پیشرفته فعال می‌شوند</p><div class="toggle-row" style="border:none;padding:0"><span class="label">فعال‌سازی حالت دمو</span><label class="switch"><input type="checkbox" id="s-demo" '+(state.settings.demoMode?'checked':'')+'><span class="switch-track"></span></label></div>'+(state.settings.demoMode?getDemoSettingsHTML():'')+'</div>'+
+    '<div class="settings-section"><h4>فضای ذخیره‌سازی</h4><div class="muted" id="s-storage" style="font-size:12px"></div></div>'+
+    '<div class="settings-section"><button class="btn btn-primary" onclick="saveSettings()"><i data-lucide="check"></i> ذخیره</button></div>'+
+    '<div class="settings-section"><button class="btn btn-outline" style="width:100%;color:var(--danger);border-color:var(--danger)" onclick="confirmDeleteAccount()"><i data-lucide="trash-2"></i> حذف حساب</button></div>'+
+  '</div></div>';
+  root.innerHTML=html;
+  if(window.lucide) lucide.createIcons();
+  var storageEl=document.getElementById('s-storage');
+  if(storageEl){ var used=storageUsage(); storageEl.textContent='استفاده: '+(used/1024).toFixed(0)+' کیلوبایت از ۵ مگابایت'; }
+  var bd=root.querySelector('.modal-backdrop');
+  requestAnimationFrame(function(){bd.classList.add('show');});
+  bd.onclick=function(e){ if(e.target===bd) closeModal(); };
+  root.querySelectorAll('#s-theme-grid .theme-card').forEach(function(card){
+    card.addEventListener('click',function(){
+      root.querySelectorAll('#s-theme-grid .theme-card').forEach(function(c){c.classList.remove('selected');});
+      card.classList.add('selected');
+      state.settings.theme=card.dataset.theme; applyTheme(); persistSettings();
+    });
+  });
+  document.getElementById('s-dark').addEventListener('change',function(e){ state.settings.dark=e.target.checked; applyTheme(); persistSettings(); });
+  document.getElementById('s-showpage').addEventListener('change',function(e){ state.settings.showPageNumbers=e.target.checked; persistSettings(); });
+  var demoChk=document.getElementById('s-demo');
+  if(demoChk){
+    demoChk.addEventListener('change',function(e){
+      state.settings.demoMode=e.target.checked;
+      persistSettings(); applyDemoMode();
+      closeModal(); setTimeout(openSettings,300);
+    });
+  }
+  var typeSeg=root.querySelector('#s-account-type');
+  typeSeg.querySelectorAll('button').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      typeSeg.querySelectorAll('button').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      var isPub=btn.dataset.type==='public';
+      var sl=document.querySelector('#s-school')?document.querySelector('#s-school').closest('.field').querySelector('label'):null;
+      if(sl) sl.textContent=isPub?'سازمان':'مدرسه';
+      var gl=document.querySelector('#s-grade')?document.querySelector('#s-grade').closest('.field').querySelector('label'):null;
+      if(gl) gl.textContent=isPub?'سمت':'پایه';
+      var cf=document.querySelector('#s-class')?document.querySelector('#s-class').closest('.field'):null;
+      if(cf) cf.style.display=isPub?'none':'';
+    });
+  });
+}
+function saveSettings(){
+  if(!state.profile) state.profile={accountType:'student'};
+  var nameEl=document.getElementById('s-name'); if(!nameEl) return;
+  var name=nameEl.value.trim(); if(!name){ toast('نام خالی است','error'); return; }
+  var typeSeg=document.getElementById('s-account-type');
+  var activeBtn=typeSeg.querySelector('button.active');
+  var newType=activeBtn?activeBtn.dataset.type:state.profile.accountType;
+  state.profile.name=name; state.profile.accountType=newType;
+  var schoolEl=document.getElementById('s-school'),gradeEl=document.getElementById('s-grade'),classEl=document.getElementById('s-class');
+  if(newType==='student'){
+    state.profile.school=schoolEl?schoolEl.value.trim():'';
+    state.profile.className=classEl?classEl.value.trim():'';
+    state.profile.grade=gradeEl?gradeEl.value.trim():'';
+    delete state.profile.organization; delete state.profile.role;
+  } else {
+    state.profile.organization=schoolEl?schoolEl.value.trim():'';
+    state.profile.role=gradeEl?gradeEl.value.trim():'';
+    delete state.profile.school; delete state.profile.className; delete state.profile.grade;
+  }
+  persistProfile(); persistSettings(); applyDemoMode();
+  toast('ذخیره شد','success'); updateDashboard(); closeModal();
+}
+function confirmDeleteAccount(){
+  closeModal();
+  setTimeout(function(){
+    showConfirm('حذف حساب','تمام اطلاعات پاک خواهد شد. غیرقابل بازگشت.',function(){
+      try{ localStorage.removeItem(KEYS.profile); localStorage.removeItem(KEYS.researches); localStorage.removeItem(KEYS.settings); }catch(e){}
+      toast('حساب حذف شد','success'); setTimeout(function(){location.reload();},800);
+    });
+  },300);
+}
+
+function getStreak(){ try{ var s=parseInt(localStorage.getItem('streak')||'0')||0; var last=localStorage.getItem('lastActivity'); if(!last) return 0; var today=new Date().toDateString(); var yesterday=new Date(Date.now()-86400000).toDateString(); if(last===today||last===yesterday) return s; return 0; }catch(e){ return 0; } }
+function updateStreak(){
+  try{
+    var today=new Date().toDateString(); var last=localStorage.getItem('lastActivity'); if(last===today) return;
+    var yesterday=new Date(Date.now()-86400000).toDateString();
+    var s=parseInt(localStorage.getItem('streak')||'0')||0;
+    s=(last===yesterday)?s+1:1;
+    localStorage.setItem('streak',String(s)); localStorage.setItem('lastActivity',today);
+  }catch(e){}
+}
+function updateStreakBadge(){
+  var c=document.getElementById('streak-container'); if(!c) return;
+  var s=getStreak();
+  if(s>0&&state.settings.demoMode) c.innerHTML='<div class="streak-badge">🔥 '+s+' روز پیوسته</div>';
+  else c.innerHTML='';
+}
+function setupAutoSave(){
+  setInterval(function(){
+    if(!state.current) return;
+    var cp=document.getElementById('page-content');
+    if(!cp||!cp.classList.contains('active')) return;
+    try{ contentReadToCurrent(); localStorage.setItem('autosave',JSON.stringify({data:state.current,time:new Date().toISOString()})); }catch(e){}
+  },15000);
+}
+function checkAutoSave(){
+  try{
+    var saved=localStorage.getItem('autosave'); if(!saved) return;
+    var obj=JSON.parse(saved); if(!obj||!obj.data) return;
+    var age=Date.now()-new Date(obj.time).getTime();
+    if(age>24*60*60*1000){ localStorage.removeItem('autosave'); return; }
+    setTimeout(function(){
+      showConfirm('ادامه نوشتن؟','یک پیش‌نویس ذخیره‌شده از '+faDate(obj.time)+' دارید. ادامه دهید؟',function(){
+        state.current=obj.data;
+        if(state.current.type==='brochure'){ fillBrochureForm(); showPage('page-brochure-form'); }
+        else { applyFormLabels(); fillForm(); fillContent(); showPage('page-content'); }
+        toast('بازیابی شد','success');
+      },false);
+    },1000);
+  }catch(e){}
+}
+function backupData(){
+  var data={exported:new Date().toISOString(),version:'1.0',profile:state.profile,researches:state.researches,settings:state.settings};
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a'); a.href=url; a.download='tahghighyar-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  toast('پشتیبان دانلود شد','success');
+}
+function restoreFromFile(e){
+  var file=e.target.files&&e.target.files[0]; e.target.value='';
+  if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      var data=JSON.parse(ev.target.result);
+      if(!data.researches&&!data.profile) throw new Error('invalid');
+      showConfirm('بازیابی','اطلاعات فعلی جایگزین می‌شود. ادامه؟',function(){
+        if(data.profile) state.profile=data.profile;
+        if(data.researches) state.researches=data.researches;
+        if(data.settings) state.settings=Object.assign({},state.settings,data.settings);
+        persistProfile(); persistResearches(); persistSettings();
+        toast('بازیابی موفق','success'); setTimeout(function(){location.reload();},500);
+      });
+    }catch(err){ toast('فایل معتبر نیست','error'); }
+  };
+  reader.readAsText(file);
+}
+function copyResearchText(){
+  if(!state.current){ toast('سندی موجود نیست','error'); return; }
+  var text=(state.current.title||'')+'\n\n';
+  ['intro','abstract','body','conclusion','sources'].forEach(function(k){ if(state.current[k]) text+=stripTokens(state.current[k])+'\n\n'; });
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(function(){ toast('کپی شد','success'); }).catch(function(){ toast('خطا','error'); }); }
+  else { var ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); toast('کپی شد','success'); }catch(e){ toast('خطا','error'); } document.body.removeChild(ta); }
+}
+function toggleSpeak(){
+  if(isSpeaking){ speechSynthesis.cancel(); isSpeaking=false; toast('متوقف شد','info'); return; }
+  if(!state.current) return;
+  var text='';
+  ['intro','abstract','body','conclusion'].forEach(function(k){ if(state.current[k]) text+=stripTokens(state.current[k])+' '; });
+  if(!text.trim()){ toast('متنی نیست','error'); return; }
+  if(!('speechSynthesis' in window)){ toast('پشتیبانی نمی‌شود','error'); return; }
+  var u=new SpeechSynthesisUtterance(text); u.lang='fa-IR'; u.rate=0.95;
+  u.onend=function(){ isSpeaking=false; }; u.onerror=function(){ isSpeaking=false; };
+  isSpeaking=true; speechSynthesis.speak(u); toast('در حال خواندن...','info');
+}
+function dictate(fieldId){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){ toast('مرورگر پشتیبانی نمی‌کند','error'); return; }
+  if(activeRecognition){
+    try{ activeRecognition.stop(); }catch(e){}
+    activeRecognition=null;
+    document.querySelectorAll('.mic-btn').forEach(function(b){b.classList.remove('recording');});
+    return;
+  }
+  var rec=new SR(); rec.lang='fa-IR'; rec.continuous=false; rec.interimResults=false;
+  var ta=document.getElementById(fieldId);
+  var start=ta?ta.selectionStart:0;
+  rec.onresult=function(e){
+    var t=e.results[0][0].transcript;
+    if(ta){ ta.value=ta.value.slice(0,start)+' '+t+' '+ta.value.slice(start); ta.focus(); try{ ta.setSelectionRange(start+t.length+2,start+t.length+2); }catch(err){} if(ta._resizeFn) ta._resizeFn(); }
+  };
+  rec.onerror=function(e){ if(e.error!=='aborted'&&e.error!=='no-speech') toast('خطا: '+e.error,'error'); };
+  rec.onend=function(){ activeRecognition=null; document.querySelectorAll('.mic-btn').forEach(function(b){b.classList.remove('recording');}); };
+  try{ rec.start(); activeRecognition=rec; document.querySelectorAll('.mic-btn[data-target="'+fieldId+'"]').forEach(function(b){b.classList.add('recording');}); toast('صحبت کنید...','info'); }catch(e){ toast('خطا','error'); }
+}
+function setupMicButtons(){
+  ['c-intro','c-abstract','c-body','c-conclusion'].forEach(function(id){
+    var ta=document.getElementById(id); if(!ta||ta._micAdded) return;
+    var field=ta.closest('.field'); if(!field) return;
+    var actions=field.querySelector('.field-actions'); if(!actions) return;
+    var btn=document.createElement('button');
+    btn.type='button'; btn.className='mic-btn'; btn.dataset.target=id;
+    btn.innerHTML='<i data-lucide="mic"></i> گفتار';
+    btn.onclick=function(){ dictate(id); };
+    actions.insertBefore(btn,actions.firstChild);
+    ta._micAdded=true;
+  });
+  if(window.lucide) lucide.createIcons();
+}
+var TEMPLATES={
+  science:{name:'علوم تجربی',icon:'🔬',title:'تحقیق علوم تجربی',intro:'علم تجربی، پدیده‌های طبیعی را با روش‌های مشاهده و آزمایش بررسی می‌کند. در این تحقیق تلاش می‌شود تا جوانب مختلف موضوع مورد بررسی قرار گیرد و با استفاده از شواهد علمی، تصویری روشن از آن ارائه شود.',abstract:'این تحقیق به بررسی موضوع انتخابی و تحلیل جنبه‌های علمی آن می‌پردازد. نتایج به‌دست‌آمده می‌تواند برای درک بهتر پدیده مورد نظر مفید باشد.',body:'برای انجام این تحقیق، ابتدا منابع معتبر علمی مورد مطالعه قرار گرفت. سپس مشاهدات لازم انجام و داده‌های جمع‌آوری شد. در ادامه، اطلاعات به‌دست‌آمده مورد تحلیل قرار گرفت و نتایج استخراج شد.\n\nیافته‌های این بررسی نشان می‌دهد که موضوع مورد مطالعه دارای ابعاد گوناگونی است که هر یک می‌تواند در جای خود حائز اهمیت باشد.',conclusion:'با توجه به بررسی‌های انجام‌شده می‌توان نتیجه گرفت که موضوع دارای اهمیت علمی قابل توجهی است و مطالعه بیشتر درباره آن می‌تواند مفید باشد.',sources:'منابع:\n۱. ...\n۲. ...'},
+  literature:{name:'ادبیات فارسی',icon:'📖',title:'تحقیق ادبیات فارسی',intro:'ادبیات فارسی گنجینه‌ای از اندیشه‌ها و احساسات گذشتگان است. این تحقیق به بررسی یکی از جنبه‌های این گنجینه ارزشمند می‌پردازد.',abstract:'تحقیق حاضر به تحلیل و بررسی موضوعی در حوزه ادبیات فارسی می‌پردازد و تلاش می‌کند تا ابعاد مختلف آن را روشن سازد.',body:'در این بخش، نمونه‌ها و شواهد ادبی مربوط به موضوع مورد بررسی قرار می‌گیرند و از منظر زیبایی‌شناسی و محتوایی تحلیل می‌شوند.\n\nبررسی‌ها نشان می‌دهد که این موضوع در آثار ادبی مختلف بازتاب یافته و هر شاعر یا نویسنده به شیوه خود به آن پرداخته است.',conclusion:'ادبیات فارسی سرشار از مفاهیم ارزشمند است که بررسی آن‌ها می‌تواند برای نسل جوان بسیار آموزنده باشد.',sources:'منابع:\n۱. ...\n۲. ...'},
+  social:{name:'مطالعات اجتماعی',icon:'🌍',title:'تحقیق مطالعات اجتماعی',intro:'مطالعات اجتماعی به بررسی جنبه‌های مختلف زندگی اجتماعی انسان می‌پردازد. این تحقیق به یکی از موضوعات مهم در این حوزه اختصاص دارد.',abstract:'این تحقیق به بررسی یکی از موضوعات مهم اجتماعی می‌پردازد و تلاش می‌کند تا با تحلیل داده‌ها، تصویری روشن از آن ارائه دهد.',body:'برای بررسی این موضوع از روش‌های مختلف مانند مطالعه منابع، بررسی آمار و تحلیل موارد مشابه استفاده شده است.\n\nنتایج نشان می‌دهد که این موضوع در زندگی اجتماعی امروز اهمیت قابل توجهی دارد و نیازمند توجه بیشتر است.',conclusion:'نتایج این بررسی نشان می‌دهد که موضوع دارای اهمیت اجتماعی قابل توجهی است و پرداختن به آن می‌تواند به بهبود شرایط کمک کند.',sources:'منابع:\n۱. ...\n۲. ...'}
+};
+function openTemplates(){
+  var root=document.getElementById('modal-root');
+  var html='<div class="modal-backdrop"><div class="modal settings-modal"><h3><span>📚 قالب‌های آماده</span><button class="icon-btn" style="width:36px;height:36px" onclick="closeModal()"><i data-lucide="x"></i></button></h3>';
+  Object.keys(TEMPLATES).forEach(function(k){
+    var t=TEMPLATES[k];
+    html+='<div style="background:var(--bg);padding:14px;border-radius:12px;margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span style="font-size:22px">'+t.icon+'</span><b style="font-size:15px">'+t.name+'</b></div><p class="muted" style="font-size:12px;margin:0 0 10px">'+t.abstract.slice(0,90)+'...</p><button class="btn btn-primary btn-sm" onclick="useTemplate(\''+k+'\')">استفاده از این قالب</button></div>';
+  });
+  html+='</div></div>';
+  root.innerHTML=html;
+  if(window.lucide) lucide.createIcons();
+  var bd=root.querySelector('.modal-backdrop');
+  requestAnimationFrame(function(){bd.classList.add('show');});
+  bd.onclick=function(e){ if(e.target===bd) closeModal(); };
+}
+function useTemplate(key){
+  var t=TEMPLATES[key]; if(!t) return;
+  closeModal(); startNewResearch();
+  setTimeout(function(){
+    document.getElementById('f-title').value=t.title;
+    fillContent();
+    document.getElementById('c-intro').value=t.intro;
+    document.getElementById('c-abstract').value=t.abstract;
+    document.getElementById('c-body').value=t.body;
+    document.getElementById('c-conclusion').value=t.conclusion;
+    document.getElementById('c-sources').value=t.sources;
+    showPage('page-content'); setTimeout(triggerResizeAll,30);
+    toast('قالب اعمال شد','success');
+  },200);
+}
+function exportWord(){
+  var sheet=document.getElementById('sheet-scaler'); if(!sheet){ toast('سندی نیست','error'); return; }
+  var title=((state.current&&state.current.title)||'تحقیق').trim();
+  var full='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>'+escapeHtml(title)+'</title><style>@page{size:A4;margin:2cm}body{font-family:Tahoma,sans-serif;direction:rtl;line-height:1.9}h2{border-bottom:2px solid #333;padding-bottom:8px;font-size:16pt}p{font-size:11pt;text-align:justify}table{width:100%;border-collapse:collapse;background:#f7f7fa}th,td{padding:8px 12px;border-top:1px solid #e0e0e6;text-align:right;font-size:10.5pt}th{background:#eeeef3;width:130pt}.bismillah{text-align:center;font-size:16pt;font-weight:800;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #ccc}.thanks{text-align:center;font-weight:700;margin-top:20px;padding-top:16px;border-top:1px solid #ccc}img{max-width:100%;border-radius:6px}.page-number{display:none}.inline-img{max-width:100%;max-height:9cm}</style></head><body dir="rtl">'+sheet.innerHTML+'</body></html>';
+  var blob=new Blob(['\ufeff',full],{type:'application/msword'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a'); a.href=url; a.download=title+'.doc';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  toast('Word دانلود شد','success');
+}
+function exportHTML(){
+  var sheet=document.getElementById('sheet-scaler'); if(!sheet){ toast('سندی نیست','error'); return; }
+  var title=((state.current&&state.current.title)||'تحقیق').trim();
+  var full='<!DOCTYPE html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(title)+'</title><link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet"><style>body{font-family:Vazirmatn,Tahoma,sans-serif;background:#f6f5fb;margin:0;padding:20px;line-height:1.9;color:#181433}.sheet-section{background:#fff;max-width:21cm;margin:0 auto 20px;padding:2cm;box-shadow:0 4px 20px rgba(0,0,0,.08);border-radius:6px}h2{border-bottom:2px solid #333;padding-bottom:8px;font-size:18px}p{text-align:justify}table{width:100%;border-collapse:collapse;background:#f7f7fa;border-radius:6px;overflow:hidden}th,td{padding:8px 12px;border-top:1px solid #e0e0e6;text-align:right}th{background:#eeeef3;width:130px;font-size:13px}.bismillah{text-align:center;font-size:18px;font-weight:800;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #ccc}.thanks{text-align:center;font-weight:700;margin-top:20px;padding-top:16px;border-top:1px solid #ccc}img{max-width:100%;border-radius:6px}.page-number{display:none}@media print{.sheet-section{box-shadow:none;margin:0;max-width:none;padding:15mm}}</style></head><body>'+sheet.innerHTML+'</body></html>';
+  var blob=new Blob([full],{type:'text/html;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a'); a.href=url; a.download=title+'.html';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  toast('HTML دانلود شد','success');
+}
+function getStats(){
+  var words=0,images=0,researchCount=0,brochureCount=0;
+  state.researches.forEach(function(r){
+    if(r.type==='brochure') brochureCount++; else researchCount++;
+    ['intro','abstract','body','conclusion','sources'].forEach(function(k){ if(r[k]) words+=stripTokens(r[k]).split(/\s+/).filter(Boolean).length; });
+    images+=(r.images||[]).length;
+  });
+  return {total:state.researches.length,researchCount:researchCount,brochureCount:brochureCount,words:words,images:images};
+}
+function getAchievements(){
+  var s=getStats(); var streak=getStreak();
+  return [
+    {name:'اولین قدم',desc:'اولین سند',icon:'🌱',unlocked:s.total>=1},
+    {name:'پنج‌تایی',desc:'۵ سند',icon:'🎯',unlocked:s.total>=5},
+    {name:'ده‌تایی',desc:'۱۰ سند',icon:'🏅',unlocked:s.total>=10},
+    {name:'نویسنده',desc:'۱۰۰۰ کلمه',icon:'✍️',unlocked:s.words>=1000},
+    {name:'کلام‌آور',desc:'۵۰۰۰ کلمه',icon:'📝',unlocked:s.words>=5000},
+    {name:'عکاس',desc:'۱۰ تصویر',icon:'📸',unlocked:s.images>=10},
+    {name:'استمرار',desc:'۳ روز پیوسته',icon:'🔥',unlocked:streak>=3},
+    {name:'هفت‌خوان',desc:'۷ روز پیوسته',icon:'⭐',unlocked:streak>=7},
+    {name:'طراح',desc:'اولین بروشور',icon:'📰',unlocked:s.brochureCount>=1}
+  ];
+}
+function getDemoSettingsHTML(){
+  var stats=getStats(); var achs=getAchievements(); var streak=getStreak();
+  return '<div style="background:var(--bg);padding:14px;border-radius:12px;margin-top:14px"><h5 style="margin:0 0 8px;font-size:14px;font-weight:700">📊 آمار من</h5><div class="stats-grid"><div class="stat-box"><span class="stat-num">'+stats.total+'</span><span class="stat-label">سند</span></div><div class="stat-box"><span class="stat-num">'+stats.words+'</span><span class="stat-label">کلمه</span></div><div class="stat-box"><span class="stat-num">'+stats.images+'</span><span class="stat-label">تصویر</span></div><div class="stat-box"><span class="stat-num">'+streak+'🔥</span><span class="stat-label">روز پیوسته</span></div></div><h5 style="margin:16px 0 8px;font-size:14px;font-weight:700">🏆 دستاوردها</h5><div class="achievement-grid">'+achs.map(function(a){return '<div class="achievement '+(a.unlocked?'unlocked':'locked')+'"><span class="achievement-icon">'+a.icon+'</span><div style="font-weight:700">'+a.name+'</div><div style="font-size:10px;opacity:.7;margin-top:2px">'+a.desc+'</div></div>';}).join('')+'</div><h5 style="margin:16px 0 8px;font-size:14px;font-weight:700">💾 پشتیبان</h5><div style="display:flex;gap:8px"><button class="btn btn-outline btn-sm" onclick="backupData()" style="flex:1"><i data-lucide="download"></i> دانلود</button><label class="btn btn-outline btn-sm" style="flex:1;cursor:pointer;justify-content:center"><i data-lucide="upload"></i> بازیابی<input type="file" accept="application/json" style="display:none" onchange="restoreFromFile(event)"></label></div></div>';
+}
+
+function searchWikipedia(topic,lang){
+  var results=[];
+  var url='https://'+lang+'.wikipedia.org/w/api.php?action=query&list=search&srsearch='+encodeURIComponent(topic)+'&srlimit=4&format=json&origin=*';
+  return fetchTimeout(url,8000).then(function(r){return r.json();}).then(function(data){
+    var items=(data.query&&data.query.search)||[];
+    var chain=Promise.resolve();
+    items.slice(0,3).forEach(function(item){
+      chain=chain.then(function(){
+        var exUrl='https://'+lang+'.wikipedia.org/w/api.php?action=query&prop=extracts&explaintext=1&format=json&origin=*&titles='+encodeURIComponent(item.title);
+        return fetchTimeout(exUrl,8000).then(function(r){return r.json();}).then(function(d){
+          var pages=(d.query&&d.query.pages)||{}; var keys=Object.keys(pages);
+          if(keys.length){ var page=pages[keys[0]]; if(page&&page.extract&&page.extract.length>100){ results.push({title:item.title,extract:page.extract,lang:lang,source:lang==='fa'?'ویکی‌پدیا فارسی':'ویکی‌پدیا انگلیسی',url:'https://'+lang+'.wikipedia.org/wiki/'+encodeURIComponent(item.title)}); } }
+        }).catch(function(){});
+      });
+    });
+    return chain.then(function(){return results;});
+  }).catch(function(){ return []; });
+}
+function searchDDG(topic){
+  var url='https://api.duckduckgo.com/?q='+encodeURIComponent(topic)+'&format=json&no_html=1&skip_disambig=1';
+  return fetchTimeout(url,7000).then(function(r){return r.json();}).then(function(data){
+    if(data.AbstractText&&data.AbstractText.length>80){ return {title:data.Heading||topic,extract:data.AbstractText,lang:'en',source:'DuckDuckGo',url:data.AbstractURL||('https://duckduckgo.com/?q='+encodeURIComponent(topic))}; }
+    return null;
+  }).catch(function(){ return null; });
+}
+function translateText(text){
+  if(!text) return Promise.resolve('');
+  var chunks=[],t=text;
+  while(t.length>450){ var cut=t.lastIndexOf('.',450); if(cut<100) cut=450; chunks.push(t.slice(0,cut+1)); t=t.slice(cut+1); }
+  chunks.push(t);
+  var out=[],chain=Promise.resolve();
+  chunks.forEach(function(c){
+    chain=chain.then(function(){
+      var trimmed=c.trim(); if(!trimmed){ out.push(''); return; }
+      var url='https://api.mymemory.translated.net/get?q='+encodeURIComponent(trimmed)+'&langpair=en|fa';
+      return fetchTimeout(url,8000).then(function(r){return r.json();}).then(function(d){ var tr=d.responseData&&d.responseData.translatedText; out.push(tr&&tr.length>10?tr:trimmed); }).catch(function(){ out.push(trimmed); });
+    });
+  });
+  return chain.then(function(){ return out.join(' '); });
+}
+function gatherOptions(topic,keywords){
+  var query=keywords.length?(topic+' '+keywords.join(' ')):topic;
+  var options=[];
+  return searchWikipedia(query,'fa').then(function(faResults){
+    faResults.forEach(function(r){ options.push({title:r.title,extract:r.extract,summary:sentences(r.extract,2),source:'ویکی‌پدیا فارسی',url:r.url,lang:'fa'}); });
+    if(options.length>=3) return options;
+    return searchWikipedia(query,'en').then(function(enResults){
+      enResults.forEach(function(r){ if(options.length>=4) return; options.push({title:r.title,extract:r.extract,summary:sentences(r.extract,2),source:'ویکی‌پدیا انگلیسی',url:r.url,lang:'en',needsTranslate:true}); });
+      if(options.length>0) return options;
+      return searchDDG(query).then(function(ddg){ if(ddg) options.push({title:ddg.title,extract:ddg.extract,summary:sentences(ddg.extract,2),source:ddg.source,url:ddg.url,lang:'en',needsTranslate:true}); return options; });
+    });
+  }).then(function(opts){
+    if(keywords.length){
+      var kws=keywords.map(function(k){return k.toLowerCase();});
+      var scored=opts.map(function(o){ var text=(o.title+' '+o.extract).toLowerCase(); return {opt:o,score:kws.filter(function(k){return text.indexOf(k)!==-1;}).length}; });
+      scored.sort(function(a,b){return b.score-a.score;});
+      return scored.slice(0,5).map(function(s){return s.opt;});
+    }
+    return opts.slice(0,5);
+  });
+}
+function renderSkeletonOptions(){
+  var out='';
+  for(var i=0;i<3;i++){ out+='<div class="skeleton-card"><div class="skeleton skeleton-line w60"></div><div class="skeleton skeleton-line w80" style="height:12px"></div><div class="skeleton skeleton-line w40" style="height:12px"></div></div>'; }
+  return out;
+}
+function handleAISearch(){
+  var topic=document.getElementById('ai-topic').value.trim();
+  if(!topic){ toast('موضوع را وارد کنید','error'); return; }
+  var keywordsStr=document.getElementById('ai-keywords').value.trim();
+  var keywords=keywordsStr?keywordsStr.split(/[,،]/).map(function(s){return s.trim();}).filter(Boolean):[];
+  var btn=document.getElementById('ai-search-btn'),results=document.getElementById('ai-results');
+  btn.disabled=true; btn.innerHTML='<span style="display:inline-block;animation:spin 1s linear infinite"><i data-lucide="loader-2"></i></span> جست‌وجو...';
+  if(window.lucide) lucide.createIcons();
+  results.innerHTML=renderSkeletonOptions();
+  gatherOptions(topic,keywords).then(function(options){
+    btn.disabled=false; btn.innerHTML='<i data-lucide="search"></i> جست‌وجو';
+    if(!options.length){
+      results.innerHTML='<div class="empty"><div class="empty-icon"><i data-lucide="wifi-off"></i></div><h3>نتوانستیم اطلاعاتی پیدا کنیم</h3><p>می‌توانید سند دستی بسازید.</p><button class="btn btn-primary" style="max-width:280px;margin:0 auto" onclick="startNewResearch()"><i data-lucide="edit-3"></i> ساخت دستی</button></div>';
+      if(window.lucide) lucide.createIcons(); return;
+    }
+    state.aiOptions=options;
+    results.innerHTML=options.map(function(o,i){
+      var badge=o.lang==='fa'?'<span class="badge badge-fa">فارسی</span>':'<span class="badge badge-tr">ترجمه‌شده</span>';
+      return '<div class="ai-option" style="animation-delay:'+(i*70)+'ms"><div class="ai-option-head"><h3>'+escapeHtml(o.title)+'</h3>'+badge+'</div><p class="ai-option-summary">'+escapeHtml(o.summary)+'</p><div class="ai-option-foot"><span class="ai-source"><i data-lucide="link"></i> '+escapeHtml(o.source)+'</span><button class="btn btn-primary btn-sm" onclick="selectAIOption('+i+')">انتخاب</button></div></div>';
+    }).join('');
+    if(window.lucide) lucide.createIcons();
+  });
+}
+function selectAIOption(idx){
+  var opt=state.aiOptions[idx]; if(!opt) return;
+  toast('در حال آماده‌سازی...','info');
+  var extractP=(opt.lang==='en'&&opt.needsTranslate)?translateText(opt.extract).catch(function(){return opt.extract;}):Promise.resolve(opt.extract);
+  extractP.then(function(extract){
+    var paragraphs=String(extract).split(/\n+/).map(function(p){return p.trim();}).filter(function(p){return p.length>40;});
+    var introText=paragraphs[0]||String(extract).slice(0,400);
+    var abstractText=sentences(paragraphs[0]||extract,3)||introText.slice(0,200);
+    var bodyText=paragraphs.slice(1).join('\n\n')||paragraphs[0]||String(extract);
+    var conclText=paragraphs.length>1?sentences(paragraphs[paragraphs.length-1],2):'در پایان، با توجه به مطالب بررسی شده می‌توان نتیجه گرفت که این موضوع از اهمیت ویژه‌ای برخوردار است.';
+    var sourceLine='• '+opt.source+'\n  '+opt.url;
+    state.current={id:null,type:'research',researcher:(state.profile&&state.profile.name)||'',title:opt.title,school:(state.profile&&(state.profile.school||state.profile.organization))||'',group:'',className:(state.profile&&state.profile.className)||'',subject:'',teacher:'',grade:(state.profile&&state.profile.grade)||'',intro:introText,abstract:abstractText,body:bodyText,conclusion:conclText,sources:sourceLine,showBismillah:true,showThanks:true,showBorder:true,images:[],brochureData:null};
+    applyFormLabels(); fillForm(); fillContent();
+    if(saveCurrent()){
+      previewReturnPage='page-ai'; buildSheet(); showPage('page-preview'); showResearchView();
+      toast('آماده شد','success');
+    }
+  });
+}
+
+function init(){
+  loadAll();
+  applyTheme();
+  applyDemoMode();
+  if(window.lucide) lucide.createIcons();
+  setupWelcome();
+  setupAutoResize();
+  setupAutoSave();
+  setupMicButtons();
+  updateStreakBadge();
+  checkAutoSave();
+  if(!state.profile||!state.profile.name){ showPage('page-welcome'); }
+  else { updateDashboard(); showPage('page-dashboard'); }
+  window.addEventListener('resize',function(){
+    if(document.getElementById('page-preview').classList.contains('active')){
+      if(currentPreviewView==='brochure') fitBrochure(); else fitPreview();
+    }
+  });
+}
+if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',init); }
+else { init(); }
+</script>
+</body>
+</html>
